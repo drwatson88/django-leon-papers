@@ -1,0 +1,38 @@
+{% extends "base/base.html" %}
+{% load thumbnail %}
+
+
+
+{% block head_links_css_bs %}
+    {{ block.super }}
+    <link href="{% static "css/news_inside.css" %}" rel="stylesheet">
+{% endblock head_links_css_bs %}
+
+
+
+{% block main-center %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="product-col list clearfix">
+                    <div class="image">
+                        {% thumbnail object.image "150x150" crop="center" as image %}
+                        <img src="{{ image.url }}" alt="product" class="img-responsive" />
+                        {% endthumbnail %}
+                    </div>
+                    <div class="caption">
+                        <h4><a href="{{ object.slug_title }}">{{ object.title }}</a></h4>
+                        <div class="description">
+                            {{ object.content|safe }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+         </div>
+    </div>
+{% endblock main-center %}
+
+
+{% block main-sidebar-piece-first %}
+
+{% endblock main-sidebar-piece-first %}

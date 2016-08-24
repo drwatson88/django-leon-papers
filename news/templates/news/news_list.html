@@ -1,0 +1,40 @@
+{%  extends "base/base.html" %}
+{% load thumbnail %}
+
+
+
+{% block head_links_css_bs %}
+    {{ block.super }}
+    <link href="{% static "css/news_list.css" %}" rel="stylesheet">
+{% endblock head_links_css_bs %}
+
+
+
+{% block main-center %}
+    <div id="main-container" class="container">
+        <div class="row">
+            {% for obj in object_list %}
+            <div class="col-xs-12">
+                <div class="product-col list clearfix">
+                    <div class="image">
+                        {% thumbnail obj.image "150x150" crop="center" as image %}
+                        <img src="{{ image.url }}" alt="product" class="img-responsive" />
+                        {% endthumbnail %}
+                    </div>
+                    <div class="caption">
+                        <h4><a href="{{ obj.slug_title }}">{{ obj.title }}</a></h4>
+                        <div class="description">
+                            {{ obj.content }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+         </div>
+    </div>
+{% endblock main-center %}
+
+
+{% block main-sidebar-piece-first %}
+
+{% endblock main-sidebar-piece-first %}

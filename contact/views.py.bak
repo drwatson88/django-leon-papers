@@ -1,0 +1,45 @@
+# -*- coding: utf-8 -*-
+
+from django.template import RequestContext
+from django.shortcuts import render_to_response, get_object_or_404
+from django.core.context_processors import csrf
+from forms import FormContact
+from django.core.mail import send_mail, EmailMessage
+from django.http import HttpResponseRedirect, HttpResponse
+import os,random
+from setttings.models import Settings
+from models import Contact, MSettings
+from pytils.translit import slugify 
+from django.contrib.flatpages.models import FlatPage
+
+def contact(request):
+  sended = False
+  if request.method == 'POST':
+    form = FormContact(request.POST, request.FILES)
+    if form.is_valid():
+          settings=Settings.objects.all()[0]
+          cd = form.cleaned_data        
+          mess  = u"" ;
+          mess += u"Имя: %s\n" % cd['name']
+          mess += u"Телефон: %s\n" % cd['phone']          
+          mess += u"E-mail: %s\n" % cd['email']
+          mess += u"Сообщение: %s\n" % cd['message'] 
+          contact = Contact(name=cd['name'], phone=cd['phone'], email=cd['email'], message=cd['message']) 
+          contact.save()
+          mail = EmailMessage(u'Сообщение с сайта', mess,'info.server777@gmail.com', [settings.email])
+          mail.send()
+          form = FormContact() 
+          sended = True                
+  else:
+    form = FormContact()
+    
+  return render_to_response('contact/contact.html',
+  {
+      'form':form,
+      'sended':sended,
+      'MSettings':MSettings.objects.get(id=3),
+  },context_instance = RequestContext(request), )
+ 
+  
+def send_vopros(request):
+  return render_to_response('faq/send_vopros.html', {}, context_instance = RequestContext(request),)
