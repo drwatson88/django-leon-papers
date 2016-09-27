@@ -1,0 +1,223 @@
+{% load staticfiles %}
+{% load thumbnail %}
+{#{% load django_bootstrap_breadcrumbs %}#}
+
+<!doctype html>
+<html>
+	{% block head %}
+	<head>
+
+	{% block head_meta_charset %}
+	{% endblock head_meta_charset %}
+
+	{% block head_meta_profile %}
+	{% endblock head_meta_profile %}
+
+	{% block head_title %}
+	{% endblock head_title %}
+
+	{% block head_links_css_bs %}
+		<!-- Bootstrap Core CSS -->
+		<link href="{% static "css/bootstrap.css" %}" rel="stylesheet">
+        <link href="{% static "css/bootstrap-theme.css" %}" rel="stylesheet">
+        <link href="{% static "shop/base/base.css" %}" rel="stylesheet">
+	{% endblock head_links_css_bs %}
+
+    {% block js %}
+        <script src="{% static "js/jquery.js" %}"></script>
+        <script src="{% static "js/jquery.hoverIntent.js" %}"></script>
+        <script src="{% static "js/bootstrap.js" %}"></script>
+    {% endblock js %}
+
+	{% block head_links_fonts %}
+		<!-- Google Web Fonts -->
+		<link href="http://fonts.googleapis.com/css?family=Roboto+Condensed:
+		                   300italic,400italic,700italic,400,300,700" rel="stylesheet" type="text/css">
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:
+		                   300italic,400italic,600italic,700italic,800italic,400,
+		                   300,600,700,800' rel='stylesheet' type='text/css'>
+	{% endblock head_links_fonts %}
+
+	{% block head_links_css_fs %}
+	{% endblock head_links_css_fs %}
+
+	{% block head_links_icons %}
+
+	{% endblock head_links_icons %}
+
+	{% block head_links_fav %}
+
+	{% endblock head_links_fav %}
+
+	</head>
+	{% endblock head %}
+
+    {% block body %}
+	<body>
+
+        <header>
+            <div class="custom-header">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="custom-block-header-logo">
+
+                                {% block header-logo %}
+
+                                    {% include 'shop/blocks/header-logo/header-logo.html' %}
+
+                                {% endblock header-logo %}
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="custom-block-header-cart">
+
+                                {% block header-cart %}
+
+                                    {% include 'shop/blocks/cart/cart_menu_context.html' %}
+
+                                {% endblock header-cart %}
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="custom-block-header-phone">
+
+                                {% block header-phone %}
+
+                                    {% include 'shop/blocks/header-phone/header-phone.html' %}
+
+                                {% endblock header-phone %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <nav>
+            <div class="custom-header-nav">
+                <div class="container">
+                    <div class="navbar">
+                        <div class="custom-block-header-nav-main-menu">
+
+                            {% block header-nav-main-menu %}
+
+                                {% include 'shop/blocks/nav-main_menu/nav-main_menu.html' %}
+
+                            {% endblock header-nav-main-menu %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main>
+            <div class="custom-main">
+                <div class="container">
+                    <div class="custom-block-main">
+
+                        {% block main %}
+
+                        <div class="row">
+                            <div class="col-lg-9">
+                                <div class="custom-block-main-center">
+
+                                    {% block main-center %}
+
+
+                                    {% endblock main-center %}
+
+                                    {% block main-center-storage %}
+
+
+                                    {% endblock main-center-storage %}
+
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="custom-block-main-sidebar">
+
+                                    {% block main-sidebar %}
+
+                                        {% block main-sidebar-piece-first %}
+                                        {% endblock main-sidebar-piece-first %}
+
+                                        {% block main-sidebar-piece-second %}
+                                        {% endblock main-sidebar-piece-second %}
+
+                                        {% block main-sidebar-piece-third %}
+                                        {% endblock main-sidebar-piece-third %}
+
+                                        {% block main-sidebar-piece-fourth %}
+                                        {% endblock main-sidebar-piece-fourth %}
+
+                                    {% endblock main-sidebar %}
+
+                                </div>
+                            </div>
+                        </div>
+
+                        {% endblock main %}
+
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <nav>
+            <div class="custom-footer-nav">
+                <div class="container">
+                    <div class="navbar">
+                        <div class="custom-block-footer-nav-main-menu">
+
+                            {% block footer-nav-main-menu %}
+
+                                {% include 'shop/blocks/nav-main_menu/nav-main_menu.html' %}
+
+                            {% endblock footer-nav-main-menu %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <footer>
+            <div class="custom-footer-links">
+                <div class="container">
+                    <div class="row">
+                        <div class="custom-block-footer-links">
+
+                            {% block footer-links %}
+
+                                {% include 'shop/blocks/footer-links/footer-links.html' %}
+
+                            {% endblock footer-links %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="custom-footer-copyright">
+                <div class="custom-block-footer-copyright">
+
+                    {% block footer-copyright %}
+
+                        {% include 'shop/blocks/footer-copyright/footer-copyright.html' %}
+
+                    {% endblock footer-copyright %}
+
+                </div>
+            </div>
+        </footer>
+    </body>
+    {% endblock body %}
+</html>
+
+
