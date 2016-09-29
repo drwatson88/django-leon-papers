@@ -1,40 +1,48 @@
-{%extends "face/base/base.html"%}
+{%extends "papers/base/base.html"%}
 {% load staticfiles %}
 {% load thumbnail %}
 
 {% block main %}
 
-	<!-- Slider Section Starts -->
-		<div class="slider">
-			<div class="container">
-				<div id="main-carousel" class="carousel slide" data-ride="carousel">
-					<!-- Wrapper For Slides Starts -->
-						<div class="carousel-inner">
-							<div class="item active">
-                                {% thumbnail active_slide.image "1200x500" crop="center" as image %}
-								    <img src="{{ image.url }}" alt="Slider" class="img-responsive" />
-                                {% endthumbnail %}
-							</div>
-                            {% for slide in nonactive_slides %}
-							<div class="item">
-                                {% thumbnail slide.image "1200x500" crop="center" as image %}
-								    <img src="{{ image.url }}" alt="Slider" class="img-responsive" />
-                                {% endthumbnail %}
-							</div>
-                            {% endfor %}
-						</div>
-					<!-- Wrapper For Slides Ends -->
-					<!-- Controls Starts -->
-						<a class="left carousel-control" href="#main-carousel" role="button" data-slide="prev">
-							<span class="glyphicon glyphicon-chevron-left"></span>
-						</a>
-						<a class="right carousel-control" href="#main-carousel" role="button" data-slide="next">
-							<span class="glyphicon glyphicon-chevron-right"></span>
-						</a>
-					<!-- Controls Ends -->
-				</div>
-			</div>
-		</div>
-	<!-- Slider Section Ends -->
+    <div class="row">
+        <div class="col-lg-12">
+
+        <!-- Slider Section Starts -->
+            <div class="slider">
+
+                    <div id="main-carousel" class="carousel slide" data-ride="carousel">
+                        <!-- Wrapper For Slides Starts -->
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    {% thumbnail active_slide.image "1200x500" crop="center" as image %}
+                                        <img src="{{ image.url }}" alt="Slider" class="img-responsive" />
+                                    {% endthumbnail %}
+                                </div>
+                                {% for slide in nonactive_slides %}
+                                <div class="item">
+                                    {% thumbnail slide.image "1200x500" crop="center" as image %}
+                                        <img src="{{ image.url }}" alt="Slider" class="img-responsive" />
+                                    {% endthumbnail %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        <!-- Wrapper For Slides Ends -->
+                        <!-- Controls Starts -->
+                            <a class="left carousel-control" href="#main-carousel" role="button" data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                            </a>
+                            <a class="right carousel-control" href="#main-carousel" role="button" data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                            </a>
+                        <!-- Controls Ends -->
+                    </div>
+            </div>
+        </div>
+        <!-- Slider Section Ends -->
+    </div>
+
+    <style media="screen" type="text/css">
+        @import "{% static "papers/blocks/pages/css/main_page.css" %}";
+    </style>
 
 {% endblock main %}
