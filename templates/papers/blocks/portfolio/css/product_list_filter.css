@@ -1,0 +1,84 @@
+.main-catalog-filter-wrapper .filter-main {
+    position: relative;
+    transition-delay: 1s;
+    /*display: none;*/
+    /*width: 100%;*/
+    /*z-index: 999;*/
+}
+
+    .main-catalog-filter-wrapper .filter-main .head {
+        margin-top:0;
+        padding:12px 20px;
+        font-size:18px;
+        text-transform:uppercase;
+        color:#ffb400;
+        background:#252a2f;
+    }
+
+    .main-catalog-filter-wrapper .filter-main .list-group-item:first-child {
+        border-top-right-radius: 1px;
+        border-top-left-radius: 1px;
+    }
+
+    .main-catalog-filter-wrapper .filter-main .list-group-item:last-child {
+        border-top-right-radius: 1px;
+        border-top-left-radius: 1px;
+    }
+
+    .main-catalog-filter-wrapper .filter-main .list-group-item .price-range {
+        width: 50px;
+        margin: 0 20px;
+    }
+
+    .main-catalog-filter-wrapper .filter-main .list-group-item .edition-range {
+        width: 50px;
+        margin: 0 20px;
+    }
+
+    .main-catalog-filter-wrapper .filter-main .list-group-item .brands {
+        margin: 0 30px;
+    }
+
+    .main-catalog-filter-wrapper .filter-main .list-group-item p {
+        font-size: 18px;
+        font-weight: normal;
+        margin: 0;
+        text-transform:uppercase;
+        font-family: 'Roboto Condensed', sans-serif;
+    }
+
+    .main-catalog-filter-wrapper .filter-main .list-group-item .brands .checkbox {
+        text-transform:uppercase;
+    }
+
+    /*.main-catalog-filter-wrapper .filter-main .cat-list {*/
+        /*position: absolute;*/
+        /*display: none;*/
+        /*z-index: 999;*/
+        /*width: 100%;*/
+        /*!*transition-delay: 1s;*!*/
+        /*!*transition-duration: 1s;*!*/
+    /*}*/
+
+    /*.main-catalog-filter-wrapper .filter-main .cat-list {*/
+        /*position: absolute;*/
+        /*display: none;*/
+        /*z-index: 999;*/
+        /*width: 100%;*/
+        /*!*transition-delay: 1s;*!*/
+        /*!*transition-duration: 1s;*!*/
+    /*}*/
+
+
+        /*.main-catalog-filter-wrapper .filter-main .cat-list .item {*/
+            /*!*color: #0a0a0a;*!*/
+            /*!*font-size:14px;*!*/
+            /*!*text-transform:uppercase;*!*/
+
+            /*!*position: absolute;*!*/
+            /*!*display: none;*!*/
+            /*!*z-index: 999;*!*/
+            /*!*width: 100%;*!*/
+            /*!*transition-delay: 1s;*!*/
+            /*!*transition-duration: 1s;*!*/
+        /*}*/

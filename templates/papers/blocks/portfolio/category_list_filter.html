@@ -1,0 +1,52 @@
+{% load staticfiles %}
+{% load thumbnail %}
+
+<div class="main-catalog-filter-wrapper">
+    <div class="filter-main">
+        <h3 class="head">Поиск</h3>
+        <form action="." method="post">
+            <div class="list-group-item">
+                <p>Цена</p>
+            </div>
+            <div class="list-group-item">
+                <label for="price-from">от</label>
+                <input name="price-from" class="price-range" type="text">
+                <label for="price-to">до</label>
+                <input name="price-to" class="price-range" type="text">
+            </div>
+            <div class="list-group-item">
+                <p>Тираж</p>
+            </div>
+            <div class="list-group-item">
+                <label for="edition-from">от</label>
+                <input name="edition-from" class="edition-range" type="text">
+                <label for="edition-to">до</label>
+                <input name="edition-to" class="edition-range" type="text">
+            </div>
+            <div class="list-group-item">
+                <p>Бренды</p>
+            </div>
+            <div class="list-group-item">
+                <div class="brands">
+                    {% for brand in brand_obj_s %}
+                    <label class="checkbox">
+                        <input name="makers" type="checkbox" value={{ brand.id }}
+                        {% if brand.checked %}
+                            checked
+                        {% endif %}
+                        >
+                        {{ brand.official }}
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="list-group-item">
+                <button type="submit" class="btn btn-warning filter-button">
+                    Применить
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="storage">
+    </div>
+</div>

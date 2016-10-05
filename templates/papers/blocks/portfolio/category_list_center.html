@@ -1,0 +1,138 @@
+{% load staticfiles %}
+{% load thumbnail %}
+{% load django_bootstrap_breadcrumbs %}
+
+
+{% block breadcrumbs %}
+    {% clear_breadcrumbs %}
+    {% breadcrumb "Главная" 'main_page' %}
+{#    {% breadcrumb "Портфолио" 'catalog:category_list' %}#}
+{#    {% breadcrumb current_category.title 'catalog:product_list' current_category.slug_title %}#}
+{% endblock %}
+
+
+<div class="main-catalog-center-wrapper">
+
+    {% block content %}
+        {% render_breadcrumbs %}
+    {% endblock %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="category-desc">
+
+                <h2 class="desc-header">
+                    {{ current_category.title }}
+                </h2>
+
+                <div class="desc-main">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="image">
+                                {% thumbnail current_category.image "178x178" crop="center" as image %}
+                                    <img src="{% static image.url %}" alt={{ current_category.preview }} class="img-thumbnail" />
+                                {% endthumbnail %}
+                            </div>
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="text">
+                                {% autoescape off %}
+                                    {{ current_category.preview | default_if_none:"" | linebreaks }}
+                                {% endautoescape %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="product-list-filter">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="display">
+                            <a href="" data-grid="list">
+                                <i class="fa fa-th-list" title="List View"></i>
+                            </a>
+                            <a href="" data-grid="grid" class="active">
+                                <i class="fa fa-th" title="Grid View"></i>
+                            </a>
+                        </div>
+                     </div>
+                    <div class="col-lg-2 col-lg-offset-3 text-right">
+                        <label class="control-label">Сортировать</label>
+                    </div>
+                    <div class="col-lg-3 text-right">
+                        <select class="order-control form-control">
+                            {% for order in order_s %}
+                            <option value={{ order.name }}
+                                {% if order.selected %}
+                                     selected="selected"
+                                {% endif %}
+                                >{{ order.official }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    {% for row in category_row_s %}
+    <div class="row">
+        {% for category in row %}
+        <div class="col-lg-3">
+            <div class="product">
+                <div class="image">
+                    <div class="image">
+                        {% thumbnail category.image "157x157" crop="center" as image %}
+                            <img src="{% static image.url %}" alt={{ category.preview }}
+                                    class="img-thumbnail" />
+                        {% endthumbnail %}
+                    </div>
+                </div>
+                <div class="caption">
+                    <a href="{% url 'portfolio:product_list' category.slug_title %}">
+                        {{ category.title | truncatechars:30 }}
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="pagination-block">
+                <ul class="pagination">
+                    <li value="prev"><a href=".">«</a></li>
+                    {% for page in page_s %}
+                    <li
+                        {% if page.active %}
+                        class="active"
+                        {% endif %}
+                        value={{ page.id }}
+                        data-page-start={{ page_start }}
+                        data-page-stop={{ page_stop }}>
+                        <a href=".">{{ page.id }}</a>
+                    </li>
+                    {% endfor %}
+                    <li value="next"><a href=".">»</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="pagination-results">
+                Показано с {{ page_start }} по {{ page_stop }} из {{ page_count }} страниц
+            </div>
+        </div>
+    </div>
+
+    <div class="storage"></div>
+
+</div>
