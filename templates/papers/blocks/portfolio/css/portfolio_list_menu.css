@@ -1,0 +1,56 @@
+.main-catalog-menu-wrapper .menu-head {
+    position: relative;
+    transition-delay: 1s;
+    /*display: none;*/
+    /*width: 100%;*/
+    /*z-index: 999;*/
+}
+
+    .main-catalog-menu-wrapper .menu-head .header {
+        margin-top:0;
+        padding:12px 20px;
+        font-size:18px;
+        text-transform:uppercase;
+        color:#ffb400;
+        background:#252a2f;
+    }
+
+
+.main-catalog-menu-wrapper .menu-root-list {
+    position: absolute;
+    display: none;
+    z-index: 999;
+    width: 100%;
+    /*transition-delay: 1s;*/
+    /*transition-duration: 1s;*/
+}
+
+.main-catalog-menu-wrapper .list-group {
+    border-radius: 1px;
+}
+
+    .main-catalog-menu-wrapper .list-group .list-group-item:first-child {
+        border-top-right-radius: 1px;
+        border-top-left-radius: 1px;
+    }
+
+    .main-catalog-menu-wrapper .list-group .list-group-item:last-child {
+        border-bottom-right-radius: 1px;
+        border-bottom-left-radius: 1px;
+    }
+
+    .main-catalog-menu-wrapper .list-group .list-group-item.selected {
+        background:#ffb400;
+    }
+
+    .main-catalog-menu-wrapper .list-group .list-group-item:hover {
+        background:#ffb400;
+    }
+
+    .main-catalog-menu-wrapper .menu-current-list .sidebar-cat {
+        padding-left: 4px;
+    }
+
+    .main-catalog-menu-wrapper .menu-current-list .sidebar-subcat {
+        padding-left: 18px;
+    }

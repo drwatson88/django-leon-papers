@@ -1,4 +1,4 @@
-.main-catalog-center-wrapper .product {
+.main-catalog-center-wrapper .portfolio {
     position: relative;
     height: 330px;
 
@@ -8,12 +8,12 @@
     border: 1px solid #e8e8e8;
 }
 
-    .main-catalog-center-wrapper .product .caption {
-        padding: 7px 0;
+    .main-catalog-center-wrapper .portfolio .caption {
+        padding: 18px 0;
         height: 60px;
     }
 
-        .main-catalog-center-wrapper .product .caption a {
+        .main-catalog-center-wrapper .portfolio .caption a {
             text-transform: uppercase;
             text-decoration: none;
             font-family: 'Roboto Condensed', Helvetica, Times New Roman, sans-serif;
@@ -23,7 +23,7 @@
             color: #252a2f;
         }
 
-    .main-catalog-center-wrapper .product .description {
+    .main-catalog-center-wrapper .portfolio .description {
         padding: 5px 0;
         color: #8b8b8b;
         font-size: 12px;
@@ -33,39 +33,39 @@
         display: block;
     }
 
-        .main-catalog-center-wrapper .product .price .price-new {
+        .main-catalog-center-wrapper .portfolio .price .price-new {
             color: #2f353b;
             font-size: 16px;
             font-weight: bolder;
             padding-right: 0;
         }
 
-        .main-catalog-center-wrapper .product .price .price-old {
+        .main-catalog-center-wrapper .portfolio .price .price-old {
             color: #808080;
             font-size: 14px;
             text-decoration: line-through;
         }
 
-    .main-catalog-center-wrapper .product .cart-button-group {
+    .main-catalog-center-wrapper .portfolio .cart-button-group {
         padding-top: 5px;
         margin-left: -2px;
     }
 
-    .main-catalog-center-wrapper .product .btn-wishlist {
+    .main-catalog-center-wrapper .portfolio .btn-wishlist {
         border-radius: 0;
         color: #fff;
         background: #2f353b;
         margin: 0 2px;
     }
 
-    .main-catalog-center-wrapper .product .btn-compare {
+    .main-catalog-center-wrapper .portfolio .btn-compare {
         border-radius: 0;
         color: #fff;
         background: #2f353b;
         margin: 0 2px;
     }
 
-    .main-catalog-center-wrapper .product .btn-cart {
+    .main-catalog-center-wrapper .portfolio .btn-cart {
         border-radius: 0;
         color: #2f353b;
         background: #ffb400;
@@ -73,7 +73,7 @@
         width: 56%;
     }
 
-        .main-catalog-center-wrapper .product button:hover {
+        .main-catalog-center-wrapper .portfolio button:hover {
             background: #2f353b;
             color: #fff;
         }
@@ -131,73 +131,3 @@
             padding-left: 5px;
             text-align: justify;
         }
-
-.main-catalog-center-wrapper .product-list-filter {
-    margin: 30px 0;
-    padding: 8px 0;
-    border: solid #d0d0d0;
-    border-width: 1px 0;
-}
-
-    .main-catalog-center-wrapper .product-list-filter .display {
-    }
-
-        .main-catalog-center-wrapper .product-list-filter .display a {
-            color: #2f353b;
-            font-size: 24px;
-            margin-right: 6px;
-        }
-
-            .main-catalog-center-wrapper .product-list-filter .display a.active {
-                color: #ffb400;
-            }
-
-
-    .main-catalog-center-wrapper .product-list-filter .control-label {
-        padding-top: 5px;
-        font-weight: normal;
-        color: #252a2f;
-        font-size: 14px;
-    }
-
-
-    .main-catalog-center-wrapper .product-list-filter .order-control {
-        height: 30px;
-        padding: 3px 6px;
-        -webkit-border-radius: 0;
-        -moz-border-radius: 0;
-        border-radius: 0;
-    }
-
-    .main-catalog-center-wrapper .product-list-filter .count-control {
-        height: 30px;
-        padding: 3px 6px;
-        -webkit-border-radius: 0;
-        -moz-border-radius: 0;
-        border-radius: 0;
-    }
-
-
-.main-catalog-center-wrapper .pagination-block {
-    color: #252a2f;
-    font: 14px/22px 'Open Sans', Arial, Helvetica, sans-serif;
-}
-
-    .main-catalog-center-wrapper .pagination-block .pagination {
-        margin: 0;
-        font-family: 'Roboto Condensed', sans-serif;
-    }
-
-        .main-catalog-center-wrapper .pagination-block .pagination  a{
-            color: #444c53;
-        }
-
-            .main-catalog-center-wrapper .pagination-block .pagination .active a{
-                background: #ffb400;
-                border-color: #ffb400;
-            }
-
-    .main-catalog-center-wrapper .pagination-results {
-        padding-top: 10px;
-        text-align: right;
-    }

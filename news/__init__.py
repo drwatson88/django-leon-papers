@@ -1,3 +1,3 @@
 # coding: utf-8
 
-default_app_config = 'news.apps.NewsConfig'
+default_app_config = 'portfolio.apps.PortfolioConfig'

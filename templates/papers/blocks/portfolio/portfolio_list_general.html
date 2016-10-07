@@ -1,0 +1,27 @@
+{% extends 'papers/base/base.html' %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load django_bootstrap_breadcrumbs %}
+
+
+{#{% block breadcrumbs %}#}
+{#    {{ block.super }}#}
+{#{% endblock %}#}
+
+
+{% block main-center %}
+    {% include 'papers/blocks/portfolio/portfolio_list_center.html' %}
+    <style media="screen" type="text/css">
+        @import "{% static "papers/blocks/portfolio/css/portfolio_list_center.css" %}";
+    </style>
+{#    <script src="{% static "papers/blocks/portfolio/js/portfolio_list_center.js" %}"></script>#}
+{% endblock main-center %}
+
+
+{% block main-sidebar-piece-first %}
+    {% include 'papers/blocks/portfolio/portfolio_list_menu.html' %}
+    <style media="screen" type="text/css">
+        @import "{% static "papers/blocks/portfolio/css/portfolio_list_menu.css" %}";
+    </style>
+{#    <script src="{% static "papers/blocks/portfolio/js/portfolio_list_menu.js" %}"></script>#}
+{% endblock main-sidebar-piece-first %}

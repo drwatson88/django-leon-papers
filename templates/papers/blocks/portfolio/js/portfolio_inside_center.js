@@ -100,105 +100,40 @@
     *   - order_select_pfx - prefix 'select' for order list
     *
     * */
-    var block_class = ' .main-catalog-menu-wrapper';
+    var block_class = ' .main-catalog-center-wrapper';
     var dom_storage = ' .storage';
 
-    var dom_menu_head = ' .menu-head';
-    var dom_menu_root = ' .menu-root-list';
-    var dom_link_selected = ' .menu-current-list .list-group a.selected';
-
+    var dom_image_zoom = ' .image-zoom';
+    var dom_image_selected = ' ul li img';
 
     /**
     * General class of block
     *
     * */
-    function MenuController (block_cl,
-                             storage_el,
-                             menu_head,
-                             menu_root,
-                             link_selected) {
+    function CenterController (block_cl,
+                               storage_el,
+                               image_zoom,
+                               image_selected_el) {
 
         this.block_cl = block_cl;
         this.storage_el = storage_el;
-        this.menu_head = menu_head;
-        this.menu_root = menu_root;
-        this.link_selected = link_selected;
-
+        this.image_zoom = image_zoom;
+        this.image_selected_el = image_selected_el;
 
         this.initialize = function () {
-            this.rootListHandler();
-            this.bindMsg (this.block_cl, 'catalog_node_collect', this.collectData, true);
-        };
 
-        /**
-         * Function control hide-show catalog root-list
-         * */
-        this.rootListControl = function (el, menu_root) {
-
-            var menuRootListHide = function() {
-                $(el).find(menu_root).each(function(){
-                    var $child = $(this);
-                    $child.hide();
-                });
-            };
-
-            var menuRootListShow = function() {
-                $(el).find(menu_root).each(function(){
-                    var $child = $(this);
-                    $child.show();
-                });
-            };
-
-            var $this = $(el);
-            $this.hoverIntent({
-                over: menuRootListShow,
-                out: menuRootListHide,
-                timeout: 100
-            });
-        };
-
-
-        this.rootListHandler = function () {
-            var obj = this;
-            $(this.block_cl + this.menu_head).each(
-                function (index, el) {
-                    obj.rootListControl (el, obj.menu_root)
-                }
-            );
-
-        };
-
-
-        /**
-        * Collect data from the objects in filter:
-        * 1. link - link catalog
-        *
-        * and save all data in filter storage DOM object.
-        *
-        * @return {null} null
-        * */
-        this.collectData = function (event, target) {
-
-            // Link variables
-            var link = $($(this.block_cl + this.link_selected)[0]).attr('href');
-
-            this.storageSet ('link', link);
-
-            this.publishMsg (document, 'catalog_node_storage', ['menu']);
+            //this.bindMsg(this.block_cl + this.add_button, 'click', this.tabsEventHandler, true);
+            $(this.block_cl + this.image_zoom).WMZoom();
         };
     }
 
     var channel_node = new ChannelNode ();
     var data_storage = new DataStorage (block_class, dom_storage);
-    var menu_controller = new MenuController (block_class,
-                                              dom_storage,
-                                              dom_menu_head,
-                                              dom_menu_root,
-                                              dom_link_selected);
-    $.extend(true, menu_controller, channel_node, data_storage);
-    menu_controller.initialize();
+    var center_controller = new CenterController (block_class,
+                                                  dom_storage,
+                                                  dom_image_zoom,
+                                                  dom_image_selected);
+    $.extend(true, center_controller, channel_node, data_storage);
+    center_controller.initialize();
 
 })(jQuery);
-
-
-

@@ -17,22 +17,22 @@
         {% render_breadcrumbs %}
     {% endblock %}
 
-    {% for row in root_category_s %}
+    {% for row in category_s %}
     <div class="row">
         {% for category in row %}
         <div class="col-lg-3">
             <div class="category">
                 <div class="image">
                     <div class="image">
-                        {% thumbnail category.image "250x250" crop="center" as image %}
+                        {% thumbnail category.image "157x157" crop="center" as image %}
                             <img src="{% static image.url %}" alt={{ category.preview }}
                                     class="img-thumbnail" />
                         {% endthumbnail %}
                     </div>
                 </div>
                 <div class="caption">
-                    <a href="{% url 'portfolio:portfolio_list' category.slug_title %}">
-                        {{ category.title | truncatechars:80 }}
+                    <a href="{% url 'portfolio:product_list' category.slug_title %}">
+                        {{ category.title | truncatechars:30 }}
                     </a>
                 </div>
             </div>
@@ -41,4 +41,5 @@
 
     </div>
     {% endfor %}
+
 </div>

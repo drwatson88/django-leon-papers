@@ -1,12 +1,13 @@
-.main-catalog-center-wrapper .product-info {
+
+.main-catalog-center-wrapper .portfolio-info {
     padding-top: 10px;
 }
 
-    .main-catalog-center-wrapper .product-info .image {
+    .main-catalog-center-wrapper .portfolio-info .image {
 
     }
 
-        .main-catalog-center-wrapper .product-info .content-panel {
+        .main-catalog-center-wrapper .portfolio-info .content-panel {
             padding: 20px;
             background: #fff;
             border: 1px solid #e8e8e8;
@@ -15,94 +16,94 @@
             border-radius: 0;
         }
 
-            .main-catalog-center-wrapper .product-info .content-panel .manufacturer {
+            .main-catalog-center-wrapper .portfolio-info .content-panel .manufacturer {
                 color: #808080;
                 text-transform: uppercase;
             }
 
-                .main-catalog-center-wrapper .product-info .content-panel .manufacturer span {
+                .main-catalog-center-wrapper .portfolio-info .content-panel .manufacturer span {
                     min-width: 230px;
                     display: inline-block;
                     color: #2f353b;
                 }
 
-            .main-catalog-center-wrapper .product-info .content-panel .details {
+            .main-catalog-center-wrapper .portfolio-info .content-panel .details {
                 color: #808080;
                 text-transform: uppercase;
             }
 
-                .main-catalog-center-wrapper .product-info .content-panel .details span {
+                .main-catalog-center-wrapper .portfolio-info .content-panel .details span {
                     min-width: 230px;
                     display: inline-block;
                     color: #2f353b;
                 }
 
-            .main-catalog-center-wrapper .product-info .content-panel .pack {
+            .main-catalog-center-wrapper .portfolio-info .content-panel .pack {
                 color: #808080;
                 text-transform: uppercase;
             }
 
-                .main-catalog-center-wrapper .product-info .content-panel .pack span {
+                .main-catalog-center-wrapper .portfolio-info .content-panel .pack span {
                     min-width: 230px;
                     display: inline-block;
                     color: #2f353b;
                 }
 
-        .main-catalog-center-wrapper .product-info .content-panel hr {
+        .main-catalog-center-wrapper .portfolio-info .content-panel hr {
             border-color: #8c8f92;
         }
 
 
-            .main-catalog-center-wrapper .product-info .content-panel .button-panel {
+            .main-catalog-center-wrapper .portfolio-info .content-panel .button-panel {
                 font-family: 'Roboto Condensed', sans-serif;
                 font-size: 14px;
                 color: #2f353b;
                 text-transform: uppercase;
             }
 
-                .main-catalog-center-wrapper .product-info .content-panel .button-panel a {
+                .main-catalog-center-wrapper .portfolio-info .content-panel .button-panel a {
                     color: #2f353b;
                     border-radius: 0;
                     background: #ffb400;
                 }
 
-                .main-catalog-center-wrapper .product-info .content-panel .button-panel a:hover {
+                .main-catalog-center-wrapper .portfolio-info .content-panel .button-panel a:hover {
                     color: #fff;
                     background: #2f353b;
                 }
 
-            .main-catalog-center-wrapper .product-info .content-panel .price-head {
+            .main-catalog-center-wrapper .portfolio-info .content-panel .price-head {
                 padding-right: 10px;
                 font-size: 24px;
                 color: #2f353b;
                 text-transform: uppercase;
             }
 
-            .main-catalog-center-wrapper .product-info .content-panel .price-new {
+            .main-catalog-center-wrapper .portfolio-info .content-panel .price-new {
                 color: #2f353b;
                 font-size: 24px;
                 padding-right: 5px;
             }
 
-            .main-catalog-center-wrapper .product-info .image img {
+            .main-catalog-center-wrapper .portfolio-info .image img {
 			    border: 1px solid #e8e8e8;
             }
 
-            .main-catalog-center-wrapper .product-info .image .list-inline {
+            .main-catalog-center-wrapper .portfolio-info .image .list-inline {
 			    margin-left:-5px;
             }
-            .main-catalog-center-wrapper .product-info .image .list-inline li{
+            .main-catalog-center-wrapper .portfolio-info .image .list-inline li{
                 padding-left:5px;
                 padding-right:5px;
             }
-            .main-catalog-center-wrapper .product-info .image .list-inline {
+            .main-catalog-center-wrapper .portfolio-info .image .list-inline {
                 margin-left:-2px;
             }
-            .main-catalog-center-wrapper .product-info .image .list-inline li{
+            .main-catalog-center-wrapper .portfolio-info .image .list-inline li{
                 padding-left:2px;
                 padding-right:2px;
             }
-            .main-catalog-center-wrapper .product-info .image .list-inline .thumbnail{
+            .main-catalog-center-wrapper .portfolio-info .image .list-inline .thumbnail{
                 padding:10px;
                 -webkit-border-radius:0;
                    -moz-border-radius:0;

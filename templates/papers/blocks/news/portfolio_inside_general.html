@@ -1,0 +1,40 @@
+{% extends 'shop/base/base.html' %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load django_bootstrap_breadcrumbs %}
+
+
+{% block head_links_css_bs %}
+    {{ block.super }}
+    <link href="{% static "css/jquery.wm-zoom-1.0.css" %}" rel="stylesheet">
+{% endblock head_links_css_bs %}
+
+
+{% block js %}
+    {{ block.super }}
+    <script src="{% static "js/jquery.wm-zoom-1.0.js" %}"></script>
+    <script src="{% static "papers/blocks/portfolio/js/product_inside_controller.js" %}"></script>
+{% endblock js %}
+
+
+{% block main-center %}
+    {% include 'papers/blocks/portfolio/portfolio_inside_center.html' %}
+    <style media="screen" type="text/css">
+        @import "{% static "papers/blocks/portfolio/css/product_inside_center.css" %}";
+    </style>
+    <script src="{% static "papers/blocks/portfolio/js/product_inside_center.js" %}"></script>
+{% endblock main-center %}
+
+
+{% block main-sidebar-piece-first %}
+    {% include 'papers/blocks/portfolio/portfolio_inside_menu.html' %}
+    <style media="screen" type="text/css">
+        @import "{% static "papers/blocks/portfolio/css/product_inside_menu.css" %}";
+    </style>
+    <script src="{% static "papers/blocks/portfolio/js/product_inside_menu.js" %}"></script>
+{% endblock main-sidebar-piece-first %}
+
+
+{% block main-center-storage %}
+    <div class="main-catalog-storage"> </div>
+{% endblock main-center-storage %}

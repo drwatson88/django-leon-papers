@@ -1,4 +1,4 @@
-{% extends 'shop/base/base.html' %}
+{% extends 'papers/base/base.html' %}
 {% load staticfiles %}
 {% load thumbnail %}
 {% load django_bootstrap_breadcrumbs %}
@@ -9,39 +9,11 @@
 {% endblock %}
 
 
-{% block js %}
-    {{ block.super }}
-    <script src="{% static "papers/blocks/portfolio/js/category_list_controller.js" %}"></script>
-{% endblock js %}
-
-
-{% block main-center %}
-    {% include 'papers/blocks/portfolio/js/category_list_center.html' %}
+{% block main %}
+    {% include 'papers/blocks/portfolio/category_list_center.html' %}
     <style media="screen" type="text/css">
-        @import "{% static "papers/blocks/portfolio/js/category_list_center.css" %}";
+        @import "{% static "papers/blocks/portfolio/css/category_list_center.css" %}";
     </style>
-    <script src="{% static "papers/blocks/portfolio/js/category_list_center.js" %}"></script>
-{% endblock main-center %}
-
-
-{% block main-sidebar-piece-first %}
-    {% include 'papers/blocks/portfolio/js/category_list_menu.html' %}
-    <style media="screen" type="text/css">
-        @import "{% static "papers/blocks/portfolio/js/category_list_menu.css" %}";
-    </style>
-    <script src="{% static "papers/blocks/portfolio/js/category_list_menu.js" %}"></script>
-{% endblock main-sidebar-piece-first %}
-
-
-{% block main-sidebar-piece-second %}
-    {% include 'papers/blocks/portfolio/js/category_list_filter.html' %}
-    <style media="screen" type="text/css">
-        @import "{% static "papers/blocks/portfolio/js/category_list_filter.css" %}";
-    </style>
-    <script src="{% static "papers/blocks/portfolio/js/category_list_filter.js" %}"></script>
-{% endblock main-sidebar-piece-second %}
-
-
-{% block main-center-storage %}
-    <div class="main-catalog-storage"> </div>
-{% endblock main-center-storage %}
+    <script src="{% static "papers/blocks/portfolio/js/category_list_center.js" %}">
+    </script>
+{% endblock main %}

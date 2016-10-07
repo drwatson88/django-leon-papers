@@ -84,13 +84,48 @@ class Portfolio(models.Model):
         super(Portfolio, self).save()
 
     class Meta:
-        unique_together = ('', '')
         ordering = ('position',)
         verbose_name = 'Портфолио'
         verbose_name_plural = 'Портфолио'
 
     def __str__(self):
         return self.title
+
+
+class PortfolioAttachment(models.Model):
+
+    MEANINGS = (
+        (0, 'Изображение'),
+        (1, 'Файл')
+    )
+
+    def portfolio_attachment_upload_path(self):
+        return os.path.join('upload_attachment', self.maker.name, '{}{}'.
+                            format(hashlib.md5(slugify(self.desc).
+                                               encode(encoding='utf-8')).
+                                   hexdigest(), '.jpg'))
+
+    portfolio = models.ForeignKey(Portfolio, verbose_name='Портфолио')
+    meaning = models.IntegerField(verbose_name='Тип файла', choices=MEANINGS)
+    file = models.FileField(verbose_name='URL доп.файла',
+                            upload_to=portfolio_attachment_upload_path,
+                            blank=True)
+    image = models.ImageField(verbose_name='URL доп.картинки',
+                              upload_to=portfolio_attachment_upload_path,
+                              blank=True)
+    desc = models.CharField(verbose_name='Описание доп.файла или картинки',
+                            max_length=255)
+
+    def save(self, **kwargs):
+        super(PortfolioAttachment, self).save()
+
+    class Meta:
+        unique_together = ('portfolio', 'meaning', 'desc')
+        verbose_name = 'Дополнительный файл (изображение)'
+        verbose_name_plural = 'Дополнительные файлы (изображения)'
+
+    def __str__(self):
+        return self.desc
 
 
 class MSettings(models.Model):
