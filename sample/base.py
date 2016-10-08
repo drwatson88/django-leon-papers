@@ -1,10 +1,10 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
-
+import json
 from leon.base import BaseView, ParamsValidatorMixin
 
 
-class PortfolioParamsValidatorMixin(ParamsValidatorMixin):
+class ChunkParamsValidatorMixin(ParamsValidatorMixin):
 
     """ Mixin with validators for validate
         request parameters.
@@ -13,7 +13,7 @@ class PortfolioParamsValidatorMixin(ParamsValidatorMixin):
     pass
 
 
-class PortfolioBaseView(BaseView):
+class ChunkBaseView(BaseView):
 
     """ Class Base for all Catalog Class Views
         When request is received, then

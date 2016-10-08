@@ -1,0 +1,44 @@
+{% load staticfiles %}
+{% load thumbnail %}
+{% load django_bootstrap_breadcrumbs %}
+
+
+{% block breadcrumbs %}
+    {% clear_breadcrumbs %}
+    {% breadcrumb "Главная" 'main_page' %}
+{#    {% breadcrumb "Портфолио" 'catalog:category_list' %}#}
+{#    {% breadcrumb current_category.title 'catalog:product_list' current_category.slug_title %}#}
+{% endblock %}
+
+
+<div class="main-catalog-center-wrapper">
+
+    {% block content %}
+        {% render_breadcrumbs %}
+    {% endblock %}
+
+    {% for row in root_category_s %}
+    <div class="row">
+        {% for category in row %}
+        <div class="col-lg-3">
+            <div class="category">
+                <div class="image">
+                    <div class="image">
+                        {% thumbnail category.image "250x250" crop="center" as image %}
+                            <img src="{% static image.url %}" alt={{ category.preview }}
+                                    class="img-thumbnail" />
+                        {% endthumbnail %}
+                    </div>
+                </div>
+                <div class="caption">
+                    <a href="{% url 'portfolio:portfolio_list' category.slug_title %}">
+                        {{ category.title | truncatechars:80 }}
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+    {% endfor %}
+</div>

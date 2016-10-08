@@ -1,0 +1,61 @@
+{% load staticfiles %}
+{% load thumbnail %}
+{% load django_bootstrap_breadcrumbs %}
+
+
+{% block breadcrumbs %}
+{#    {{ block.super }}#}
+    {% breadcrumb "Главная" 'main_page' %}
+    {% breadcrumb "Портфолио" 'portfolio.views.category_list' %}
+    {% breadcrumb current_category.name 'portfolio_list' current_category.slug_title %}
+{% endblock %}
+
+
+<div class="main-catalog-center-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="portfolio-info">
+                <h2 class="">
+                    {{ portfolio.title }}
+                </h2>
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="image">
+                            <div class="wm-zoom-container image-zoom">
+                                <div class="wm-zoom-box">
+                                    {% thumbnail portfolio.image_current "250x300" crop="center" as image %}
+                                    {% thumbnail portfolio.image_current "1000x1000" crop="center" as image_big %}
+                                        <img src="{{ image.url }}" class="wm-zoom-default-img" alt="alternative text"
+                                             data-hight-src="{{ image_big.url }}" data-loader-src="url-image-loader-here">
+                                    {% endthumbnail %}
+                                    {% endthumbnail %}
+                                </div>
+                            </div>
+
+                            <ul class="list-unstyled list-inline">
+                                {% for attach_image in portfolio.attach_images %}
+                                <li>
+                                    {% thumbnail attach_image.image "100x100" crop="center" as image %}
+                                    {% thumbnail attach_image.image "300x300" crop="center" as image_big %}
+                                    {% thumbnail attach_image.image "1000x1000" crop="center" as image_zoom %}
+                                    <img src="{{ image.url }}" data-image-big="{{ image_big.url }}"
+                                         data-image-zoom="{{ image_zoom.url }}" alt="Image" class="img-responsive thumbnail" />
+                                    {% endthumbnail %}
+                                    {% endthumbnail %}
+                                    {% endthumbnail %}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="content-panel">
+                            {{ portfolio.content }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
