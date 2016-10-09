@@ -23,7 +23,8 @@ class Portfolio(Chunk):
 
 class PortfolioAttachment(ChunkAttachment):
 
-    chunk = models.ForeignKey(Portfolio, verbose_name='Портфолио')
+    chunk = models.ForeignKey(Portfolio, verbose_name='Портфолио',
+                              related_name='chunk_attachment')
 
     class Meta:
         verbose_name = 'Дополнительный файл (изображение)'

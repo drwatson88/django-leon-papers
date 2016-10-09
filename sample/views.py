@@ -45,8 +45,17 @@ class CategoryListView(ChunkBaseView, ChunkParamsValidatorMixin):
             self.root_category_s.append(category_s_prev[p:p+CATEGORY_GRID_COUNT])
             p += CATEGORY_GRID_COUNT
 
+    def _set_dispatcher(self):
+        self.dispatcher = {}
+        self.dispatcher.update({
+            'category_list': 'sample:category_list',
+            'chunk_list': 'sample:chunk_list',
+            'chunk_inside': 'sample:chunk_inside',
+        })
+
     def get(self, *args, **kwargs):
         self._category_s_query()
+        self._set_dispatcher()
         self._aggregate()
         return render_to_response(
             self.TEMPLATE,
@@ -76,7 +85,8 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin):
         self.output_context = {
             'category_s': None,
             'current_category': None,
-            'portfolio_s': None,
+            'chunk_s': None,
+            'dispatcher': None,
         }
         super(ChunkListView, self).__init__(*args, **kwargs)
 
@@ -91,15 +101,20 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin):
     def _chunk_s_query(self, ):
         chunk_obj_s = self.CHUNK_MODEL.objects.order_by('position').all()
         self.chunk_s = [chunk_obj_s[k: k + CHUNK_GRID_COUNT]
-                            for k in range(0, len(chunk_obj_s)//CHUNK_GRID_COUNT)]
+                        for k in range(0, len(chunk_obj_s)//CHUNK_GRID_COUNT)]
 
-    def _aggregate(self):
-        for item in self.output_context:
-            self.output_context[item] = getattr(self, item)
+    def _set_dispatcher(self):
+        self.dispatcher = {}
+        self.dispatcher.update({
+            'category_list': 'sample:category_list',
+            'chunk_list': 'sample:chunk_list',
+            'chunk_inside': 'sample:chunk_inside',
+        })
 
     def get(self, *args, **kwargs):
         self._category_s_query(self.kwargs['catalog_slug_title'])
         self._chunk_s_query()
+        self._set_dispatcher()
         self._aggregate()
         return render_to_response(
             self.TEMPLATE,
@@ -129,9 +144,10 @@ class ChunkInsideView(ChunkBaseView, ChunkParamsValidatorMixin):
     def __init__(self, *args, **kwargs):
         self.params_storage = {}
         self.output_context = {
-            'portfolio': None,
+            'chunk': None,
             'category_s': None,
             'current_category': None,
+            'dispatcher': None,
         }
         super(ChunkInsideView, self).__init__(*args, **kwargs)
 
@@ -149,13 +165,21 @@ class ChunkInsideView(ChunkBaseView, ChunkParamsValidatorMixin):
         self.chunk.image_current = self.chunk.image
 
     def _set_chunk_attach_image_s(self):
-        self.chunk.attach_images = self.chunk.chunkattachment_set.filter(meaning=1)
+        self.chunk.attach_images = self.chunk.chunk_attachment.filter(meaning=1).all()
 
     def _set_chunk_attach_file_s(self):
-        self.chunk.attach_files = self.chunk.chunkattachment_set.filter(meaning=0)
+        self.chunk.attach_files = self.chunk.chunk_attachment.filter(meaning=0).all()
 
     def _get_amount(self):
         self.total_price = 0
+
+    def _set_dispatcher(self):
+        self.dispatcher = {}
+        self.dispatcher.update({
+            'category_list': 'sample:category_list',
+            'chunk_list': 'sample:chunk_list',
+            'chunk_inside': 'sample:chunk_inside',
+        })
 
     def get(self, *args, **kwargs):
         self._set_chunk(self.kwargs['chunk_slug_title'])
@@ -164,6 +188,7 @@ class ChunkInsideView(ChunkBaseView, ChunkParamsValidatorMixin):
         self._set_chunk_attach_file_s()
         self._category_s_query()
         self._get_amount()
+        self._set_dispatcher()
         self._aggregate()
         return render_to_response(
             self.TEMPLATE,

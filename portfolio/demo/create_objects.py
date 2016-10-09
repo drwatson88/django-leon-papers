@@ -26,14 +26,14 @@ def main(project_dir):
     django.setup()
 
     from mixer.backend.django import mixer, Mixer
-    from portfolio.models import Category, Portfolio, PortfolioAttachment
+    from portfolio.models import PortfolioCategory, Portfolio, PortfolioAttachment
 
     # Generate a random category site
     mixer = Mixer(commit=False)
-    category_site_s = mixer.cycle(5).blend(Category)
+    category_site_s = mixer.cycle(5).blend(PortfolioCategory)
     for cat_site in category_site_s:
         print(cat_site.slug_title)
-        cat_site_obj = Category.add_root(
+        cat_site_obj = PortfolioCategory.add_root(
             title=cat_site.title,
             slug_title=cat_site.slug_title,
             preview=cat_site.preview,
@@ -49,13 +49,13 @@ def main(project_dir):
     portfolio_s = mixer.cycle(50).blend(Portfolio,
                                         image=PRODUCT_IMAGE,
                                         category=(cat for cat in
-                                                    list(Category.objects.all())*100),
+                                                  list(PortfolioCategory.objects.all())*100),
                                         import_fl=1)
 
     # Generate a random product attachment
     portfolio_attachment_s = mixer.cycle(100).blend(PortfolioAttachment,
-                                                    portfolio=(portfolio for portfolio in
-                                                               list(Portfolio.objects.all())*2),
+                                                    chunk=(portfolio for portfolio in
+                                                           list(Portfolio.objects.all())*2),
                                                     file=PRODUCT_IMAGE,
                                                     image=PRODUCT_IMAGE
                                                     )

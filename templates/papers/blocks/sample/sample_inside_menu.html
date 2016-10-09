@@ -12,7 +12,7 @@
     <div class="menu-current-list">
         <div class="list-group">
             {% for cat in category_s %}
-            <a href={% url 'portfolio:portfolio_list' cat.slug_title %}
+            <a href={% url dispatcher.chunk_list cat.slug_title %}
                     class="list-group-item
                 {% if cat.selected %}
                     selected
