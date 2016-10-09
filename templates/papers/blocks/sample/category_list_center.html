@@ -5,9 +5,8 @@
 
 {% block breadcrumbs %}
     {% clear_breadcrumbs %}
-    {% breadcrumb "Главная" 'main_page' %}
-{#    {% breadcrumb "Портфолио" 'catalog:category_list' %}#}
-{#    {% breadcrumb current_category.title 'catalog:product_list' current_category.slug_title %}#}
+    {% breadcrumb labels.general_label dispatcher.general %}
+    {% breadcrumb labels.app_label dispatcher.category_list %}
 {% endblock %}
 
 
@@ -31,7 +30,7 @@
                     </div>
                 </div>
                 <div class="caption">
-                    <a href="{% url 'portfolio:portfolio_list' category.slug_title %}">
+                    <a href="{% url dispatcher.chunk_list category.slug_title %}">
                         {{ category.title | truncatechars:80 }}
                     </a>
                 </div>

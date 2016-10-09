@@ -13,10 +13,18 @@ class PortfolioCategoryListView(CategoryListView, PortfolioParamsValidatorMixin)
 
     CATEGORY_MODEL = PortfolioCategory
 
+    def _set_labels(self):
+        self.labels = {}
+        self.labels.update({
+            'app_label': 'Портфолио',
+            'general_label': 'Главная',
+        })
+
     def _set_dispatcher(self):
         self.dispatcher = {}
         self.dispatcher.update({
-            'category_list': 'portfolio:portfolio_list',
+            'general': 'pages:main_page',
+            'category_list': 'portfolio:category_list',
             'chunk_list': 'portfolio:portfolio_list',
             'chunk_inside': 'portfolio:portfolio_inside',
         })
@@ -30,10 +38,18 @@ class PortfolioListView(ChunkListView, PortfolioParamsValidatorMixin):
     CATEGORY_MODEL = PortfolioCategory
     CHUNK_MODEL = Portfolio
 
+    def _set_labels(self):
+        self.labels = {}
+        self.labels.update({
+            'app_label': 'Портфолио',
+            'general_label': 'Главная',
+        })
+
     def _set_dispatcher(self):
         self.dispatcher = {}
         self.dispatcher.update({
-            'category_list': 'portfolio:portfolio_list',
+            'general': 'pages:main_page',
+            'category_list': 'portfolio:category_list',
             'chunk_list': 'portfolio:portfolio_list',
             'chunk_inside': 'portfolio:portfolio_inside',
         })
@@ -47,10 +63,18 @@ class PortfolioInsideView(ChunkInsideView, PortfolioParamsValidatorMixin):
     CATEGORY_MODEL = PortfolioCategory
     CHUNK_MODEL = Portfolio
 
+    def _set_labels(self):
+        self.labels = {}
+        self.labels.update({
+            'app_label': 'Портфолио',
+            'general_label': 'Главная',
+        })
+
     def _set_dispatcher(self):
         self.dispatcher = {}
         self.dispatcher.update({
-            'category_list': 'portfolio:portfolio_list',
+            'general': 'pages:main_page',
+            'category_list': 'portfolio:category_list',
             'chunk_list': 'portfolio:portfolio_list',
             'chunk_inside': 'portfolio:portfolio_inside',
         })
