@@ -4,7 +4,7 @@
 from leon.base import BaseView, ParamsValidatorMixin
 
 
-class NewsParamsValidatorMixin(ParamsValidatorMixin):
+class SpecialoffersParamsValidatorMixin(ParamsValidatorMixin):
 
     """ Mixin with validators for validate
         request parameters.
@@ -13,7 +13,7 @@ class NewsParamsValidatorMixin(ParamsValidatorMixin):
     pass
 
 
-class NewsBaseView(BaseView):
+class SpecialoffersBaseView(BaseView):
 
     """ Class Base for all Catalog Class Views
         When request is received, then

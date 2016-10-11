@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 
 from django.shortcuts import render_to_response, \
@@ -12,69 +12,34 @@ CATEGORY_GRID_COUNT = 4
 CHUNK_GRID_COUNT = 3
 
 
-class CategoryListView(ChunkBaseView, ChunkParamsValidatorMixin):
+class ExtraMixin:
 
-    """ Category List View.
-
-        CATEGORY_MODEL - class of db "category" model.
-        CHUNK_MODEL - class of db "chunk" model.
-        TEMPLATE - class of db "template" model.
+    """ Class for additional methods, params.
     """
 
-    CATEGORY_MODEL = None
-    CHUNK_MODEL = None
-
-    TEMPLATE = 'papers/blocks/sample/category_list_general.html'
-
-    request_params_slots = {
-    }
-
-    def __init__(self, *args, **kwargs):
-        self.params_storage = {}
-        self.output_context = {
-            'root_category_s': None,
-            'dispatcher': None,
-            'labels': None,
-        }
-        super(CategoryListView, self).__init__(*args, **kwargs)
-
-    def _category_s_query(self, ):
-        self.root_category_s = list()
-        category_s_prev = self.CATEGORY_MODEL.get_root_nodes().filter(show=True).all()
-
-        p = 0
-        while p < len(category_s_prev):
-            self.root_category_s.append(category_s_prev[p:p+CATEGORY_GRID_COUNT])
-            p += CATEGORY_GRID_COUNT
+    GENERAL_LINK = 'sample_pages:general_view'
+    GENERAL_LABEL = 'Главная'
+    APP_NAME = 'sample'
+    APP_LABEL = 'Пример'
 
     def _set_dispatcher(self):
         self.dispatcher = {}
         self.dispatcher.update({
-            'general': '',
-            'category_list': 'sample:category_list',
-            'chunk_list': 'sample:chunk_list',
-            'chunk_inside': 'sample:chunk_inside',
+            'general': self.GENERAL_LINK,
+            'category_list': '{app}:category_list'.format(app=self.APP_NAME),
+            'chunk_list': '{app}:{app}_list'.format(app=self.APP_NAME),
+            'chunk_inside': '{app}:{app}_inside'.format(app=self.APP_NAME),
         })
 
     def _set_labels(self):
         self.labels = {}
         self.labels.update({
-            'app_label': 'sample',
-            'general_label': 'sample',
+            'app_label': self.APP_LABEL,
+            'general_label': self.GENERAL_LABEL,
         })
 
-    def get(self, *args, **kwargs):
-        self._category_s_query()
-        self._set_dispatcher()
-        self._set_labels()
-        self._aggregate()
-        return render_to_response(
-            self.TEMPLATE,
-            self.output_context,
-            context_instance=RequestContext(self.request), )
 
-
-class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin):
+class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
 
     """ Chunk List View.
 
@@ -115,23 +80,6 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin):
         self.chunk_s = [chunk_obj_s[k: k + CHUNK_GRID_COUNT]
                         for k in range(0, len(chunk_obj_s)//CHUNK_GRID_COUNT)]
 
-    def _set_labels(self):
-        self.labels = {}
-        self.labels.update({
-            'app_label': 'sample',
-            'general_label': 'sample',
-        })
-
-    def _set_dispatcher(self):
-        self.dispatcher = {}
-        self._set_labels()
-        self.dispatcher.update({
-            'general': '',
-            'category_list': 'sample:category_list',
-            'chunk_list': 'sample:chunk_list',
-            'chunk_inside': 'sample:chunk_inside',
-        })
-
     def get(self, *args, **kwargs):
         self._category_s_query(self.kwargs['category_slug_title'])
         self._chunk_s_query()
@@ -144,7 +92,7 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin):
             context_instance=RequestContext(self.request), )
 
 
-class ChunkInsideView(ChunkBaseView, ChunkParamsValidatorMixin):
+class ChunkInsideView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
 
     """ Portfolio Inside View. Receives get params
         and response neither arguments in get
@@ -195,22 +143,6 @@ class ChunkInsideView(ChunkBaseView, ChunkParamsValidatorMixin):
 
     def _get_amount(self):
         self.total_price = 0
-
-    def _set_labels(self):
-        self.labels = {}
-        self.labels.update({
-            'app_label': 'sample',
-            'general_label': 'sample',
-        })
-
-    def _set_dispatcher(self):
-        self.dispatcher = {}
-        self.dispatcher.update({
-            'general': '',
-            'category_list': 'sample:category_list',
-            'chunk_list': 'sample:chunk_list',
-            'chunk_inside': 'sample:chunk_inside',
-        })
 
     def get(self, *args, **kwargs):
         self._set_chunk(self.kwargs['chunk_slug_title'])

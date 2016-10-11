@@ -2,7 +2,7 @@
 
 
 from django.db import models
-from sample.models import Category, Chunk, ChunkAttachment, ChunkSettings
+from samples.rack.models import Category, Chunk, ChunkAttachment, ChunkSettings
 
 
 class PortfolioCategory(Category):

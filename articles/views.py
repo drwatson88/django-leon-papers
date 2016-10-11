@@ -2,22 +2,22 @@
 
 
 from samples.container.views import ChunkListView, ChunkInsideView
-from .base import NewsBaseView, NewsParamsValidatorMixin
-from .models import News
+from .base import ArticlesBaseView, ArticlesParamsValidatorMixin
+from .models import Articles
 
 
 GENERAL_LINK = 'pages:main_page'
 GENERAL_LABEL = 'Главная'
-APP_NAME = 'news'
+APP_NAME = 'articles'
 APP_LABEL = 'Новости'
 
 
-class NewsListView(ChunkListView, NewsParamsValidatorMixin):
+class ArticlesListView(ChunkListView, ArticlesParamsValidatorMixin):
 
-    """ News List View.
+    """ Articles List View.
     """
 
-    CHUNK_MODEL = News
+    CHUNK_MODEL = Articles
 
     GENERAL_LINK = GENERAL_LINK
     GENERAL_LABEL = GENERAL_LABEL
@@ -25,12 +25,12 @@ class NewsListView(ChunkListView, NewsParamsValidatorMixin):
     APP_LABEL = APP_LABEL
 
 
-class NewsInsideView(ChunkInsideView, NewsParamsValidatorMixin):
+class ArticlesInsideView(ChunkInsideView, ArticlesParamsValidatorMixin):
 
-    """ News Inside View.
+    """ Articles Inside View.
     """
 
-    CHUNK_MODEL = News
+    CHUNK_MODEL = Articles
 
     GENERAL_LINK = GENERAL_LINK
     GENERAL_LABEL = GENERAL_LABEL
