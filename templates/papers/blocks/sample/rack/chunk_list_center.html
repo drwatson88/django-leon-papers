@@ -1,0 +1,77 @@
+{% load staticfiles %}
+{% load thumbnail %}
+{% load django_bootstrap_breadcrumbs %}
+
+
+{% block breadcrumbs %}
+    {% clear_breadcrumbs %}
+    {% breadcrumb labels.general_label dispatcher.general %}
+    {% breadcrumb labels.app_label dispatcher.category_list %}
+    {% breadcrumb current_category.title dispatcher.chunk_list current_category.slug_title %}
+{% endblock %}
+
+
+<div class="main-catalog-center-wrapper">
+
+    {% block content %}
+        {% render_breadcrumbs %}
+    {% endblock %}
+
+{#    <div class="row">#}
+{#        <div class="col-lg-12">#}
+{#            <div class="category-desc">#}
+{##}
+{#                <h2 class="desc-header">#}
+{#                    {{ current_category.title }}#}
+{#                </h2>#}
+{##}
+{#                <div class="desc-main">#}
+{#                    <div class="row">#}
+{#                        <div class="col-lg-3">#}
+{#                            <div class="image">#}
+{#                                {% thumbnail current_category.image "178x178" crop="center" as image %}#}
+{#                                    <img src="{% static image.url %}" alt={{ current_category.preview }} class="img-thumbnail" />#}
+{#                                {% endthumbnail %}#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="col-lg-9">#}
+{#                            <div class="text">#}
+{#                                {% autoescape off %}#}
+{#                                    {{ current_category.preview | default_if_none:"" | linebreaks }}#}
+{#                                {% endautoescape %}#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
+    {% for row in chunk_s %}
+    <div class="row">
+        {% for chunk in row %}
+        <div class="col-lg-4">
+            <div class="chunk">
+                <div class="image">
+                    <div class="image">
+                        {% thumbnail chunk.image "250x250" crop="center" as image %}
+                        <img src="{% static image.url %}" alt={{ chunk.preview }}
+                                class="img-thumbnail" />
+                        {% endthumbnail %}
+                    </div>
+                </div>
+                <div class="caption">
+                    <a href="{% url dispatcher.chunk_inside chunk.slug_title %}">
+                        {{ chunk.title | truncatechars:80 }}
+                    </a>
+                </div>
+                <div class="description">
+                </div>
+                <div class="price">
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>

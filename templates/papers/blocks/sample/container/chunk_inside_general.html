@@ -1,0 +1,31 @@
+{% extends 'papers/base/base.html' %}
+{% load staticfiles %}
+{% load thumbnail %}
+
+
+{% block head_links_css_bs %}
+    {{ block.super }}
+    <link href="{% static "css/jquery.wm-zoom-1.0.css" %}" rel="stylesheet">
+{% endblock head_links_css_bs %}
+
+
+{% block js %}
+    {{ block.super }}
+    <script src="{% static "js/jquery.wm-zoom-1.0.js" %}"></script>
+{% endblock js %}
+
+
+{% block main-center %}
+    {% include 'papers/blocks/sample/container/chunk_inside_center.html' %}
+    <style media="screen" type="text/css">
+        @import "{% static "papers/blocks/sample/container/css/chunk_inside_center.css" %}";
+    </style>
+{% endblock main-center %}
+
+
+{% block main-sidebar-piece-first %}
+    {% include 'papers/blocks/sample/container/chunk_inside_menu.html' %}
+    <style media="screen" type="text/css">
+        @import "{% static "papers/blocks/sample/container/css/chunk_inside_menu.css" %}";
+    </style>
+{% endblock main-sidebar-piece-first %}

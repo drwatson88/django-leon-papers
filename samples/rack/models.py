@@ -3,11 +3,50 @@
 
 import os
 
-
+from treebeard.mp_tree import MP_Node
 from pytils.translit import slugify
 import hashlib
 
 from django.db import models
+
+
+class Category(MP_Node):
+
+    """ Sample model for "category".
+
+    """
+
+    title = models.CharField(verbose_name='Заголовок', max_length=255)
+    slug_title = models.SlugField(verbose_name='Имя для ссылки', unique=True, blank=True)
+    preview = models.TextField(verbose_name='Краткое описание', blank=True, null=True)
+    content = models.TextField(verbose_name='Описание', blank=True, null=True)
+    show = models.BooleanField(verbose_name='Показывать', default=True)
+    image = models.ImageField(verbose_name='Изображение', blank=True, null=True)
+    position = models.IntegerField(verbose_name='Позиция', blank=True, null=True)
+
+    content_seo = models.TextField(verbose_name='Описание для SEO', blank=True, null=True)
+    title_seo = models.CharField(verbose_name='Заголовок для SEO', max_length=255, blank=True,
+                                 null=True)
+    meta_key = models.CharField(verbose_name='Meta key', max_length=255, blank=True,
+                                null=True)
+    meta_des = models.CharField(verbose_name='Meta des', max_length=255, blank=True,
+                                null=True)
+
+    def getchildrens(self):
+        return Category.get_children(self).filter(show=True)
+
+    def save(self, **kwargs):
+        if not self.id:
+            self.slug_title = slugify(self.title)
+        super(Category, self).save(**kwargs)
+
+    class Meta:
+        verbose_name = 'Категория на сайте'
+        verbose_name_plural = 'Категории на сайте'
+        abstract = True
+
+    def __str__(self):
+        return '{}{}'.format((self.depth - 1) * '---', self.slug_title)
 
 
 class Chunk(models.Model):
@@ -129,3 +168,6 @@ class ChunkSettings(models.Model):
         verbose_name = 'Настройка раздела '
         verbose_name_plural = 'Настройки раздела '
         abstract = True
+
+
+

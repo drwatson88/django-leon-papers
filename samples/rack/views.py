@@ -39,6 +39,52 @@ class ExtraMixin:
         })
 
 
+class CategoryListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
+
+    """ Category List View.
+
+        CATEGORY_MODEL - class of db "category" model.
+        CHUNK_MODEL - class of db "chunk" model.
+        TEMPLATE - class of db "template" model.
+    """
+
+    CATEGORY_MODEL = None
+    CHUNK_MODEL = None
+
+    TEMPLATE = 'papers/blocks/sample/rack/category_list_general.html'
+
+    request_params_slots = {
+    }
+
+    def __init__(self, *args, **kwargs):
+        self.params_storage = {}
+        self.output_context = {
+            'root_category_s': None,
+            'dispatcher': None,
+            'labels': None,
+        }
+        super(CategoryListView, self).__init__(*args, **kwargs)
+
+    def _category_s_query(self, ):
+        self.root_category_s = list()
+        category_s_prev = self.CATEGORY_MODEL.get_root_nodes().filter(show=True).all()
+
+        p = 0
+        while p < len(category_s_prev):
+            self.root_category_s.append(category_s_prev[p:p+CATEGORY_GRID_COUNT])
+            p += CATEGORY_GRID_COUNT
+
+    def get(self, *args, **kwargs):
+        self._category_s_query()
+        self._set_dispatcher()
+        self._set_labels()
+        self._aggregate()
+        return render_to_response(
+            self.TEMPLATE,
+            self.output_context,
+            context_instance=RequestContext(self.request), )
+
+
 class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
 
     """ Chunk List View.
@@ -51,7 +97,7 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
     CATEGORY_MODEL = None
     CHUNK_MODEL = None
 
-    TEMPLATE = 'papers/blocks/sample/container/chunk_list_general.html'
+    TEMPLATE = 'papers/blocks/sample/rack/chunk_list_general.html'
 
     request_params_slots = {
     }
@@ -106,7 +152,7 @@ class ChunkInsideView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
     CATEGORY_MODEL = None
     CHUNK_MODEL = None
 
-    TEMPLATE = 'papers/blocks/sample/container/chunk_inside_general.html'
+    TEMPLATE = 'papers/blocks/sample/rack/chunk_inside_general.html'
 
     request_params_slots = {
     }
