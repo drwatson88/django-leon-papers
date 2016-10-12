@@ -1,0 +1,11 @@
+{% extends 'papers/base/base.html' %}
+{% load staticfiles %}
+{% load thumbnail %}
+
+
+{% block main-center %}
+    {% include 'papers/blocks/samples/container/chunk_list_center.html' %}
+    <style media="screen" type="text/css">
+        @import "{% static "papers/samples/container/sample/css/chunk_list_center.css" %}";
+    </style>
+{% endblock main-center %}

@@ -1,24 +1,37 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+from django.utils.timezone import now
 import datetime
 
 
-class Contact (models.Model):
-    """ Контакт. """
+class Contact(models.Model):
+
+    """ Контакт.
+    """
+
     name = models.CharField(verbose_name='Имя', max_length=128)
     email = models.EmailField(verbose_name='E-mail')
     phone = models.CharField(verbose_name='Телефон', max_length=128)
     message = models.TextField(verbose_name='Сообщение')
-    pub_date = models.DateTimeField(verbose_name="Дата и время сообщения", default=datetime.datetime.now())
+    pub_date = models.DateTimeField(verbose_name="Дата и время сообщения", default=now)
     
     class Meta:
         ordering = ('-id', )
         verbose_name = 'Контакт'
         verbose_name_plural = 'Контакты'
-    
 
-class MSettings(models.Model):
+
+class Agency(models.Model):
+
+    """ Представительство.
+    """
+
+    title = models.CharField(verbose_name='Заголовок', max_length=255)
+    comment = models.TextField(verbose_name='Комментарий')
+
+
+class ContactSettings(models.Model):
     
     title = models.CharField(verbose_name='Заголовок раздела', max_length=128)
     content = models.TextField(verbose_name='Контент основной страницы раздела', blank=True, null = True)

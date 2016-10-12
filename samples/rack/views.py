@@ -51,7 +51,7 @@ class CategoryListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
     CATEGORY_MODEL = None
     CHUNK_MODEL = None
 
-    TEMPLATE = 'papers/blocks/sample/rack/category_list_general.html'
+    TEMPLATE = 'papers/blocks/samples/rack/category_list_general.html'
 
     request_params_slots = {
     }
@@ -97,7 +97,7 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
     CATEGORY_MODEL = None
     CHUNK_MODEL = None
 
-    TEMPLATE = 'papers/blocks/sample/rack/chunk_list_general.html'
+    TEMPLATE = 'papers/blocks/samples/rack/chunk_list_general.html'
 
     request_params_slots = {
     }
@@ -152,7 +152,7 @@ class ChunkInsideView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
     CATEGORY_MODEL = None
     CHUNK_MODEL = None
 
-    TEMPLATE = 'papers/blocks/sample/rack/chunk_inside_general.html'
+    TEMPLATE = 'papers/blocks/samples/rack/chunk_inside_general.html'
 
     request_params_slots = {
     }

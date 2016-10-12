@@ -51,7 +51,7 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
     CATEGORY_MODEL = None
     CHUNK_MODEL = None
 
-    TEMPLATE = 'papers/blocks/sample/container/chunk_list_general.html'
+    TEMPLATE = 'papers/blocks/samples/container/chunk_list_general.html'
 
     request_params_slots = {
     }
@@ -106,7 +106,7 @@ class ChunkInsideView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
     CATEGORY_MODEL = None
     CHUNK_MODEL = None
 
-    TEMPLATE = 'papers/blocks/sample/container/chunk_inside_general.html'
+    TEMPLATE = 'papers/blocks/samples/container/chunk_inside_general.html'
 
     request_params_slots = {
     }
