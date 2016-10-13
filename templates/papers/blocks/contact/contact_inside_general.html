@@ -1,0 +1,19 @@
+{% extends 'papers/base/base.html' %}
+{% load staticfiles %}
+{% load thumbnail %}
+
+
+{% block main-center %}
+    {% include 'papers/blocks/contact/contact_inside_center.html' %}
+    <style media="screen" type="text/css">
+        @import "{% static "papers/blocks/contact/css/contact_inside_center.css" %}";
+    </style>
+{% endblock main-center %}
+
+
+{% block main-sidebar-piece-first %}
+    {% include 'papers/blocks/contact/contact_inside_menu.html' %}
+    <style media="screen" type="text/css">
+        @import "{% static "papers/blocks/contact/css/contact_inside_menu.css" %}";
+    </style>
+{% endblock main-sidebar-piece-first %}
