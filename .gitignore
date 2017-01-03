@@ -3,3 +3,4 @@ venv3
 *.py[co]
 *.bak
 migrations
+external

@@ -1,9 +1,8 @@
 # coding: utf-8
 
 
-from django.shortcuts import render_to_response, \
-    get_object_or_404, HttpResponse
-from django.template import RequestContext
+from django.shortcuts import render, \
+    get_object_or_404, redirect
 
 from .base import ChunkBaseView, ChunkParamsValidatorMixin
 
@@ -39,6 +38,52 @@ class ExtraMixin:
         })
 
 
+class CategoryListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
+
+    """ Category List View.
+
+        CATEGORY_MODEL - class of db "category" model.
+        CHUNK_MODEL - class of db "chunk" model.
+        TEMPLATE - class of db "template" model.
+    """
+
+    CATEGORY_MODEL = None
+    CHUNK_MODEL = None
+
+    TEMPLATE = None
+
+    request_params_slots = {
+    }
+
+    def __init__(self, *args, **kwargs):
+        self.params_storage = {}
+        self.output_context = {
+            'root_category_s': None,
+            'dispatcher': None,
+            'labels': None,
+        }
+        super(CategoryListView, self).__init__(*args, **kwargs)
+
+    def _category_s_query(self, ):
+        self.root_category_s = list()
+        category_s_prev = self.CATEGORY_MODEL.get_root_nodes().filter(show=True).all()
+
+        p = 0
+        while p < len(category_s_prev):
+            self.root_category_s.append(category_s_prev[p:p+CATEGORY_GRID_COUNT])
+            p += CATEGORY_GRID_COUNT
+
+    def get(self, *args, **kwargs):
+        self._category_s_query()
+        self._set_dispatcher()
+        self._set_labels()
+        self._aggregate()
+        return render(
+            self.request,
+            self.TEMPLATE,
+            self.output_context)
+
+
 class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
 
     """ Chunk List View.
@@ -51,7 +96,7 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
     CATEGORY_MODEL = None
     CHUNK_MODEL = None
 
-    TEMPLATE = 'papers/blocks/samples/container/chunk_list_general.html'
+    TEMPLATE = None
 
     request_params_slots = {
     }
@@ -66,30 +111,47 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
             'labels': None,
         }
         super(ChunkListView, self).__init__(*args, **kwargs)
+        self.category_input_s = list()
+        self.category_s = None
+        self.current_category = None
 
-    def _category_s_query(self, catalog_slug_title):
-        self.category_s = self.CATEGORY_MODEL.get_root_nodes()
-        self.current_category = self.CATEGORY_MODEL.objects.filter(
-                slug_title=catalog_slug_title)[0]
+    def _category_s_query(self, ):
+        if self.kwargs.get('category_slug_title'):
+            self.category_s = self.CATEGORY_MODEL.get_root_nodes()
+            self.current_category = self.CATEGORY_MODEL.objects.filter(
+                    slug_title=self.kwargs.get('category_slug_title'))[0]
 
-        for cat in self.category_s:
-            cat.selected = True if cat.id == self.current_category.id else False
+            if not self.current_category:
+                redirect('category_list')
+
+    def _chunk_obj_s_query(self, ):
+        if self.kwargs.get('category_slug_title'):
+            self.category_input_s.extend(self.current_category.
+                                         values_list('id', flat=True))
+            self.category_input_s.extend(self.current_category.get_children().
+                                         values_list('id', flat=True))
+            self.chunk_obj_s = self.CHUNK_MODEL.objects.\
+                filter(category__in=self.category_input_s).\
+                order_by('position').all()
+        else:
+            self.chunk_obj_s = self.CHUNK_MODEL.objects.\
+                order_by('position').all()
 
     def _chunk_s_query(self, ):
-        chunk_obj_s = self.CHUNK_MODEL.objects.order_by('position').all()
-        self.chunk_s = [chunk_obj_s[k: k + CHUNK_GRID_COUNT]
-                        for k in range(0, len(chunk_obj_s)//CHUNK_GRID_COUNT)]
+        self.chunk_s = [self.chunk_obj_s[k: k + CHUNK_GRID_COUNT]
+                        for k in range(0, len(self.chunk_obj_s)//CHUNK_GRID_COUNT)]
 
     def get(self, *args, **kwargs):
-        self._category_s_query(self.kwargs['category_slug_title'])
+        self._category_s_query()
+        self._chunk_obj_s_query()
         self._chunk_s_query()
         self._set_dispatcher()
         self._set_labels()
         self._aggregate()
-        return render_to_response(
+        return render(
+            self.request,
             self.TEMPLATE,
-            self.output_context,
-            context_instance=RequestContext(self.request), )
+            self.output_context)
 
 
 class ChunkInsideView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
@@ -106,7 +168,7 @@ class ChunkInsideView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
     CATEGORY_MODEL = None
     CHUNK_MODEL = None
 
-    TEMPLATE = 'papers/blocks/samples/container/chunk_inside_general.html'
+    TEMPLATE = None
 
     request_params_slots = {
     }
@@ -154,9 +216,7 @@ class ChunkInsideView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
         self._set_dispatcher()
         self._set_labels()
         self._aggregate()
-        return render_to_response(
+        return render(
+            self.request,
             self.TEMPLATE,
-            self.output_context,
-            context_instance=RequestContext(self.request), )
-
-
+            self.output_context)
