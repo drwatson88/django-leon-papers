@@ -16,12 +16,22 @@ class Category(MP_Node):
 
     """
 
+    upload_directory = ''
+
+    def chunk_upload_path(self, instance):
+        return os.path.join(self.upload_directory, '{}{}'.
+                            format(hashlib.md5(slugify(self.title).
+                                               encode(encoding='utf-8')).
+                                   hexdigest(), '.jpg'))
+
     title = models.CharField(verbose_name='Заголовок', max_length=255)
     slug_title = models.SlugField(verbose_name='Имя для ссылки', unique=True, blank=True)
     preview = models.TextField(verbose_name='Краткое описание', blank=True, null=True)
     content = models.TextField(verbose_name='Описание', blank=True, null=True)
     show = models.BooleanField(verbose_name='Показывать', default=True)
-    image = models.ImageField(verbose_name='Изображение', blank=True, null=True)
+    image = models.ImageField(verbose_name='Путь к файлу картинки',
+                              blank=True, max_length=255,
+                              upload_to=chunk_upload_path)
     position = models.IntegerField(verbose_name='Позиция', blank=True, null=True)
 
     content_seo = models.TextField(verbose_name='Описание для SEO', blank=True, null=True)
@@ -32,6 +42,9 @@ class Category(MP_Node):
     meta_des = models.CharField(verbose_name='Meta des', max_length=255, blank=True,
                                 null=True)
 
+    def count(self):
+        return len(getattr(self, '{}_set'.format(self.Options.child_label)).all())
+
     def get_show_children(self):
         return self.get_children().filter(show=True)
 
@@ -41,12 +54,10 @@ class Category(MP_Node):
         super(Category, self).save(**kwargs)
 
     class Meta:
-        verbose_name = 'Категория на сайте'
-        verbose_name_plural = 'Категории на сайте'
         abstract = True
 
     def __str__(self):
-        return '{}{}'.format((self.depth - 1) * '---', self.slug_title)
+        return '{}{}'.format((self.depth - 1) * '---', self.title)
 
 
 class Chunk(models.Model):
@@ -57,14 +68,18 @@ class Chunk(models.Model):
         category - FK for category
     """
 
+    upload_directory = ''
+
     def default_slug_title(self):
-        return slugify('{}_{}'.format(self.title, self.code))[:255]
+        return slugify('{}'.format(self.title))[:255]
 
     def default_code(self):
-        return hashlib.md5(slugify(self.title).encode(encoding='utf-8')).hexdigest()
+        return hashlib.md5(slugify(self.title).
+                           encode(encoding='utf-8')).\
+            hexdigest()
 
     def chunk_upload_path(self, instance):
-        return os.path.join('upload_chunk', '{}{}'.
+        return os.path.join(self.upload_directory, '{}{}'.
                             format(hashlib.md5(slugify(self.title).
                                                encode(encoding='utf-8')).
                                    hexdigest(), '.jpg'))
@@ -90,14 +105,12 @@ class Chunk(models.Model):
     meta_des = models.CharField(verbose_name='Meta des', max_length=255, blank=True)
 
     def save(self, **kwargs):
-        if not self.id and not self.import_fl:
+        if not self.id:
             self.slug_title = self.default_slug_title()
         super(Chunk, self).save()
 
     class Meta:
         ordering = ('position',)
-        verbose_name = 'xxx'
-        verbose_name_plural = 'xxx'
         abstract = True
 
     def __str__(self):
@@ -117,8 +130,10 @@ class ChunkAttachment(models.Model):
         (1, 'Файл')
     )
 
+    upload_directory = ''
+
     def chunk_attachment_upload_path(self):
-        return os.path.join('upload_attachment', '{}{}'.
+        return os.path.join(self.upload_directory, '{}{}'.
                             format(hashlib.md5(slugify(self.desc).
                                                encode(encoding='utf-8')).
                                    hexdigest(), '.jpg'))
@@ -149,7 +164,6 @@ class ChunkAttachment(models.Model):
 class ChunkSettings(models.Model):
 
     """ Sample model for "setting".
-
     """
 
     title = models.CharField(verbose_name='Заголовок раздела', max_length=128)
@@ -165,9 +179,4 @@ class ChunkSettings(models.Model):
                                 blank=True, null=True)
 
     class Meta:
-        verbose_name = 'Настройка раздела '
-        verbose_name_plural = 'Настройки раздела '
         abstract = True
-
-
-

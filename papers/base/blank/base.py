@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import json
-from leon.base import BaseView, ParamsValidatorMixin
+from leon.site_base import BaseView, BaseParamsValidatorMixin
 
 
-class ChunkParamsValidatorMixin(ParamsValidatorMixin):
+class ChunkParamsValidatorMixin(BaseParamsValidatorMixin):
 
     """ Mixin with validators for validate
         request parameters.
