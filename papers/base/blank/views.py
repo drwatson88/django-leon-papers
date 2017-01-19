@@ -44,10 +44,8 @@ class ChunkCategoryListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin
         TEMPLATE - class of db "template" model.
     """
     CATEGORY_GRID_COUNT = 4
-
     CATEGORY_MODEL = None
     CHUNK_MODEL = None
-
     TEMPLATE = None
 
     request_params_slots = {
@@ -86,18 +84,23 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
 
     """ Chunk List View.
 
+        BREADCRUMB_TITLE - title for breadcrumb
         CHUNK_GRID_COUNT - count of grid chunks.
         CATEGORY_MODEL - class of db "category" model.
         CHUNK_MODEL - class of db "chunk" model.
         TEMPLATE - class of db "template" model.
     """
 
+    BREADCRUMB_TITLE = 'Блог'
     CHUNK_GRID_COUNT = 2
-
     CATEGORY_MODEL = None
     CHUNK_MODEL = None
-
     TEMPLATE = None
+
+    kwargs_params_slots = {
+        'category_slug_title': [None, ''],
+        'use_category': [None, True]
+    }
 
     request_params_slots = {
     }
@@ -105,13 +108,31 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
     class CenterChunkNode(object):
 
         def __init__(self, node_obj):
-            title = node_obj.title
-            preview = node_obj.preview
-            date = node_obj.pub_date
-            comments_count = None
-            image = {
+            self.title = node_obj.title
+            self.preview = node_obj.preview
+            self.date = node_obj.pub_date
+            self.comments_count = None
+            self.image = {
                 'src': node_obj.image
             }
+
+    class MenuSidebarNode(object):
+        """
+        Class for MainMenu objects-nodes
+        """
+        name = None
+        link = {
+            'href': None
+        }
+        options = {}
+        children = []
+
+        def __init__(self, node_obj, active):
+            self.name = node_obj.title
+            self.link['href'] = '/{}/{}/{}/'.format(
+                    'articles', 'category', node_obj.slug_title)
+            self.options.update({'count': node_obj.count,
+                                 'active': active})
 
     def __init__(self, *args, **kwargs):
         self.params_storage = {}
@@ -122,24 +143,28 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
         }
         super(ChunkListView, self).__init__(*args, **kwargs)
         self.category_input_s = list()
+        self.category_s = list()
         self.menu_sidebar = {}
+        self.paper_list = {}
+        self.breadcrumb_page = {}
         self.current_category = None
+        self.parent_current_category = None
 
     def _category_s_query(self, ):
-        if self.kwargs.get('category_slug_title'):
+        if self.params_storage['use_category']:
+
             self.category_s = self.CATEGORY_MODEL.get_root_nodes()
             self.current_category = self.CATEGORY_MODEL.objects.filter(
-                slug_title=self.kwargs.get('category_slug_title'))[0]
+                slug_title=self.params_storage['category_slug_title'])[0] \
+                if self.params_storage['category_slug_title'] else None
 
-            if not self.current_category:
-                redirect('category_list')
-
-            self.parent_current_category = self.current_category.get_parent()
+            self.parent_current_category = self.current_category.get_parent() \
+                if self.current_category else None
             if not self.parent_current_category:
                 self.parent_current_category = self.current_category
 
     def _chunk_obj_s_query(self, ):
-        if self.kwargs.get('category_slug_title'):
+        if self.params_storage['use_category'] and self.current_category:
             self.category_input_s.extend([self.current_category.pk])
             self.category_input_s.extend(self.current_category.get_children().
                                          values_list('id', flat=True))
@@ -151,10 +176,54 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
                 order_by('position').all()
 
     def _format_breadcrumbs(self):
-        pass
+        self.breadcrumb_page.update({'title': self.BREADCRUMB_TITLE})
+        self.breadcrumb_page.update({'path_links': []})
+        self.breadcrumb_page['path_links'].append({'title': self.GENERAL_LABEL,
+                                                   'href': self.GENERAL_LINK, 'active': False})
+        self.breadcrumb_page['path_links'].append({'title': self.APP_LABEL,
+                                                   'href': '/{}/'.format(self.APP_NAME),
+                                                   'active': False})
+
+        if self.parent_current_category:
+            self.breadcrumb_page['path_links'].append({'title': self.parent_current_category.title,
+                                                       'href': '/{}/{}/{}/'.
+                                                       format(self.APP_NAME,
+                                                              'category',
+                                                              self.parent_current_category.slug_title),
+                                                       'active': False})
+
+        if self.current_category:
+            self.breadcrumb_page['path_links'].append({'title': self.current_category.title,
+                                                       'href': '/{}/{}/{}/'.
+                                                       format(self.APP_NAME,
+                                                              'category',
+                                                              self.current_category.slug_title),
+                                                       'active': False})
+
+        self.breadcrumb_page['path_links'][-1]['active'] = True
 
     def _format_sidebar(self):
-        pass
+        """
+        Method for format data from Django ORM format to widget format
+        :return:
+        """
+        main_menu_storage = []
+        for item in self.category_s:
+            self._recursive_node_append(item, main_menu_storage)
+        self.menu_sidebar.update({
+            'title': 'Категории раздела {}'.format(self.APP_LABEL),
+            'menu': main_menu_storage
+        })
+
+    def _recursive_node_append(self, node_obj, storage):
+        active = False
+        if (node_obj.pk == self.parent_current_category) or \
+                (node_obj.pk == self.current_category):
+            active = True
+        node = self.MenuSidebarNode(node_obj, active)
+        storage.append(node)
+        for item in node_obj.get_show_children():
+            self._recursive_node_append(item, node.children)
 
     def _format_center(self):
 

@@ -9,7 +9,15 @@ class ChunkParamsValidatorMixin(BaseParamsValidatorMixin):
         request parameters.
     """
 
-    pass
+    @staticmethod
+    def _use_category_validator(value, default):
+        return value
+
+    @staticmethod
+    def _category_slug_title_validator(value, default):
+        if value:
+            return value
+        return default
 
 
 class ChunkBaseView(BaseView):
