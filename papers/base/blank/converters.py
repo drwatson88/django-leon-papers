@@ -54,12 +54,12 @@ class ConverterMixin(object):
         if self.parent_current_category:
             self.breadcrumb_page['path_links'].append({'title': self.parent_current_category.title,
                                                        'href': '/{}/{}/{}/'.
-                                                      format(self.APP_NAME,
-                                                             'category',
-                                                             self.parent_current_category.slug_title),
+                                                       format(self.APP_NAME,
+                                                              'category',
+                                                              self.parent_current_category.slug_title),
                                                        'active': False})
 
-        if self.current_category:
+        if self.current_category and self.current_category != self.parent_current_category:
             self.breadcrumb_page['path_links'].append({'title': self.current_category.title,
                                                        'href': '/{}/{}/{}/'.
                                                       format(self.APP_NAME,
@@ -104,4 +104,4 @@ class ConverterMixin(object):
 
         self.paper_list = [chunk_node_s[k: k + self.CHUNK_GRID_COUNT]
                            for k in range(0, len(chunk_node_s) // self.CHUNK_GRID_COUNT +
-                                             1 if len(chunk_node_s) % self.CHUNK_GRID_COUNT else 0)]
+                                          (1 if len(chunk_node_s) % self.CHUNK_GRID_COUNT else 0))]

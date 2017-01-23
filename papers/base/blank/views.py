@@ -178,7 +178,7 @@ class ChunkInsideView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin, Conv
     TEMPLATE = None
 
     kwargs_params_slots = {
-        'article_slug_title': [None, ''],
+        'chunk_slug_title': [None, ''],
         'use_category': [None, True]
     }
 
