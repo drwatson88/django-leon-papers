@@ -19,6 +19,12 @@ class ChunkParamsValidatorMixin(BaseParamsValidatorMixin):
             return value
         return default
 
+    @staticmethod
+    def _chunk_slug_title_validator(value, default):
+        if value:
+            return value
+        return default
+
 
 class ChunkBaseView(BaseView):
 
