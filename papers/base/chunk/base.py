@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from leon.site_base import BaseView, BaseParamsValidatorMixin
+from leon.base import BaseView, BaseParamsValidatorMixin
 
 
 class ChunkParamsValidatorMixin(BaseParamsValidatorMixin):
