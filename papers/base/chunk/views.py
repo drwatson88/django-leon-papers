@@ -227,7 +227,7 @@ class ChunkInsideView(ChunkInsideBaseView, ChunkParamsValidatorMixin):
                 self.output_context)
 
 
-class ChunkInsideTemplateView(ChunkInsideBaseView, ChunkParamsValidatorMixin, ExtraMixin, ConverterMixin):
+class ChunkInsideTemplateView(ChunkInsideBaseView, ChunkParamsValidatorMixin):
     """ Chunk Template Inside View. Receives 
         get params and response neither 
         arguments in get request params.
