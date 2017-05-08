@@ -9,7 +9,7 @@ from .base import ChunkBaseView, ChunkParamsValidatorMixin
 from .converters import ConverterMixin
 
 
-class ExtraMixin:
+class ExtraMixin(object):
     """ Class for additional methods, params.
     """
 
@@ -80,7 +80,7 @@ class ChunkCategoryListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin
                 self.output_context)
 
 
-class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin, ConverterMixin):
+class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin):
     """ Chunk List View.
 
         BREADCRUMB_TITLE - title for breadcrumb
@@ -106,17 +106,11 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin, Conver
 
     def __init__(self, *args, **kwargs):
         self.params_storage = {}
-        self.output_context = {
-            'menu_sidebar': None,
-            'paper_list': None,
-            'breadcrumb_page': None,
-        }
+        self.output_context = {}
         super(ChunkListView, self).__init__(*args, **kwargs)
         self.category_input_s = list()
         self.category_s = list()
-        self.menu_sidebar = {}
-        self.paper_list = {}
-        self.breadcrumb_page = {}
+
         self.current_category = None
         self.parent_current_category = None
 
@@ -148,12 +142,8 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin, Conver
     def get(self, *args, **kwargs):
         self._category_s_query()
         self._chunk_obj_s_query()
-        self._set_dispatcher()
-        self._set_labels()
 
-        self._format_breadcrumbs()
-        self._format_sidebar()
-        self._format_center_list()
+        self._format_mixin_s()
 
         self._aggregate()
         return render(
@@ -162,7 +152,7 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin, Conver
                 self.output_context)
 
 
-class ChunkInsideView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin, ConverterMixin):
+class ChunkInsideBaseView(ChunkBaseView, ChunkParamsValidatorMixin):
     """ Portfolio Inside View. Receives get params
         and response neither arguments in get
         request params.
@@ -188,17 +178,10 @@ class ChunkInsideView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin, Conv
 
     def __init__(self, *args, **kwargs):
         self.params_storage = {}
-        self.output_context = {
-            'menu_sidebar': None,
-            'paper_inside': None,
-            'breadcrumb_page': None,
-        }
-        super(ChunkInsideView, self).__init__(*args, **kwargs)
+        self.output_context = {}
+        super(ChunkInsideBaseView, self).__init__(*args, **kwargs)
         self.category_input_s = list()
         self.category_s = list()
-        self.menu_sidebar = {}
-        self.paper_inside = {}
-        self.breadcrumb_page = {}
         self.current_category = None
         self.parent_current_category = None
 
@@ -221,19 +204,22 @@ class ChunkInsideView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin, Conv
     def _set_chunk_attach_file_s(self):
         self.chunk.attach_files = self.chunk.chunk_attachment.filter(meaning=0).all()
 
+
+class ChunkInsideView(ChunkInsideBaseView, ChunkParamsValidatorMixin):
+
+    """ Chunk Inside View. Receives get params
+        and response neither arguments in get
+        request params.
+    """
+
     def get(self, *args, **kwargs):
         self._set_chunk()
         self._set_chunk_image()
         self._set_chunk_attach_image_s()
         self._set_chunk_attach_file_s()
+
         self._category_s_query()
-        self._set_dispatcher()
-        self._set_labels()
-
-        self._format_breadcrumbs()
-        self._format_sidebar()
-        self._format_center_inside()
-
+        self._format_mixin_s()
         self._aggregate()
         return render(
                 self.request,
@@ -241,65 +227,14 @@ class ChunkInsideView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin, Conv
                 self.output_context)
 
 
-class ChunkInsideTemplateView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin, ConverterMixin):
+class ChunkInsideTemplateView(ChunkInsideBaseView, ChunkParamsValidatorMixin, ExtraMixin, ConverterMixin):
     """ Chunk Template Inside View. Receives 
         get params and response neither 
         arguments in get request params.
-
-        BREADCRUMB_TITLE - title for breadcrumb
-        CHUNK_GRID_COUNT - count of grid chunks.
-        CATEGORY_MODEL - class of db "category" model.
-        CHUNK_MODEL - class of db "chunk" model.
-        TEMPLATE - class of db "template" model.
     """
-    BREADCRUMB_TITLE = ''
-    CATEGORY_MODEL = None
-    CHUNK_MODEL = None
+
     TEMPLATE_PATH = None
     TEMPLATE_NAME = None
-
-    kwargs_params_slots = {
-        'chunk_slug_title': [None, ''],
-        'use_category': [None, True]
-    }
-
-    request_params_slots = {
-    }
-
-    def __init__(self, *args, **kwargs):
-        self.params_storage = {}
-        self.output_context = {
-            'menu_sidebar': None,
-            'paper_inside': None,
-            'breadcrumb_page': None,
-        }
-        super(ChunkInsideTemplateView, self).__init__(*args, **kwargs)
-        self.category_input_s = list()
-        self.category_s = list()
-        self.menu_sidebar = {}
-        self.paper_inside = {}
-        self.breadcrumb_page = {}
-        self.current_category = None
-        self.parent_current_category = None
-
-    def _set_chunk(self):
-        self.chunk = get_object_or_404(self.CHUNK_MODEL,
-                                       slug_title=self.kwargs['chunk_slug_title'])
-
-    def _category_s_query(self):
-        if self.params_storage['use_category']:
-            self.category_s = self.CATEGORY_MODEL.get_root_nodes()
-            self.current_category = self.chunk.category
-            self.parent_current_category = self.current_category.get_parent()
-
-    def _set_chunk_image(self):
-        self.chunk.image_current = self.chunk.image
-
-    def _set_chunk_attach_image_s(self):
-        self.chunk.attach_images = self.chunk.chunk_attachment.filter(meaning=1).all()
-
-    def _set_chunk_attach_file_s(self):
-        self.chunk.attach_files = self.chunk.chunk_attachment.filter(meaning=0).all()
 
     def _set_template(self):
         slug_title = self.kwargs['chunk_slug_title']
@@ -313,15 +248,11 @@ class ChunkInsideTemplateView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMix
         self._set_chunk_image()
         self._set_chunk_attach_image_s()
         self._set_chunk_attach_file_s()
+
         self._set_template()
+
         self._category_s_query()
-        self._set_dispatcher()
-        self._set_labels()
-
-        self._format_breadcrumbs()
-        self._format_sidebar()
-        self._format_center_inside()
-
+        self._format_mixin_s()
         self._aggregate()
         return render(
                 self.request,
