@@ -10,7 +10,7 @@ import hashlib
 from django.db import models
 
 
-class BaseMixin(object):
+class BaseMixin(models.Model):
 
     """ Base Mixin
     """
@@ -21,24 +21,33 @@ class BaseMixin(object):
     content = models.TextField(verbose_name='Описание', blank=True, null=True)
     pub_date = models.DateField(verbose_name='Дата публикации')
 
+    class Meta:
+        abstract = True
 
-class ShowMixin(object):
+
+class ShowMixin(models.Model):
 
     """ Show Mixin
     """
 
     show = models.BooleanField(verbose_name='Показывать', default=True)
 
+    class Meta:
+        abstract = True
 
-class PositionMixin(object):
+
+class PositionMixin(models.Model):
 
     """ Position Mixin
     """
 
     position = models.IntegerField(verbose_name='Позиция', blank=True, null=True)
 
+    class Meta:
+        abstract = True
 
-class SeoMixin(object):
+
+class SeoMixin(models.Model):
 
     """ Main Seo fields Mixin
     """
@@ -51,8 +60,11 @@ class SeoMixin(object):
     meta_des = models.CharField(verbose_name='Meta des', max_length=255, blank=True,
                                 null=True)
 
+    class Meta:
+        abstract = True
 
-class ImageUploadMixin(object):
+
+class ImageUploadMixin(models.Model):
 
     """ Image Upload Mixin - use upload_directory 
         for set DIR, where save images
@@ -70,8 +82,11 @@ class ImageUploadMixin(object):
                               blank=True, max_length=255,
                               upload_to=image_upload_path)
 
+    class Meta:
+        abstract = True
 
-class FileUploadMixin(object):
+
+class FileUploadMixin(models.Model):
 
     """ File Upload Mixin - use upload_directory 
         for set DIR, where save files
@@ -88,6 +103,9 @@ class FileUploadMixin(object):
     file = models.FileField(verbose_name='URL доп.файла',
                             upload_to=file_upload_path,
                             blank=True)
+
+    class Meta:
+        abstract = True
 
 
 class Category(MP_Node, BaseMixin, SeoMixin, ImageUploadMixin, ShowMixin, PositionMixin):
@@ -113,7 +131,22 @@ class Category(MP_Node, BaseMixin, SeoMixin, ImageUploadMixin, ShowMixin, Positi
         return '{}{}'.format((self.depth - 1) * '---', self.title)
 
 
-class Chunk(models.Model, BaseMixin, SeoMixin, ImageUploadMixin, ShowMixin, PositionMixin):
+class ExtraJsonModel(models.Model):
+
+    """ Extra Json Model
+    """
+
+    extra_field = models.CharField(verbose_name='Доп. объекты', max_length=10000,
+                                   blank=True, null=True)
+
+    def __str__(self):
+        return self.parent.title
+
+    class Meta:
+        abstract = True
+
+
+class Chunk(BaseMixin):
 
     """ Sample model for "chunk".
 
@@ -125,7 +158,7 @@ class Chunk(models.Model, BaseMixin, SeoMixin, ImageUploadMixin, ShowMixin, Posi
         return slugify('{}'.format(self.title))[:255]
 
     def save(self, **kwargs):
-        if not self.id:
+        if not self.id and not self.slug_title:
             self.slug_title = self.default_slug_title()
         super(Chunk, self).save()
 
@@ -137,7 +170,7 @@ class Chunk(models.Model, BaseMixin, SeoMixin, ImageUploadMixin, ShowMixin, Posi
         return self.title
 
 
-class ChunkAttachment(models.Model, ImageUploadMixin, FileUploadMixin):
+class ChunkAttachment(ImageUploadMixin, FileUploadMixin):
 
     """ Sample model for "chunk attachment".
 
@@ -167,7 +200,7 @@ class ChunkAttachment(models.Model, ImageUploadMixin, FileUploadMixin):
         return self.desc
 
 
-class ChunkSettings(models.Model, SeoMixin, BaseMixin, PositionMixin, ShowMixin):
+class ChunkSettings(SeoMixin, BaseMixin, PositionMixin, ShowMixin):
 
     """ Sample model for "setting".
     """

@@ -219,6 +219,7 @@ class ChunkInsideView(ChunkInsideBaseView, ChunkParamsValidatorMixin):
         self._set_chunk_attach_file_s()
 
         self._category_s_query()
+
         self._format_mixin_s()
         self._aggregate()
         return render(
@@ -252,6 +253,7 @@ class ChunkInsideTemplateView(ChunkInsideBaseView, ChunkParamsValidatorMixin):
         self._set_template()
 
         self._category_s_query()
+
         self._format_mixin_s()
         self._aggregate()
         return render(

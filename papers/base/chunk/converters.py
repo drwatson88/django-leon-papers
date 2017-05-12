@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 
+import json
+
+
 class ConverterMixin(object):
 
     class CenterChunk(object):
@@ -13,6 +16,10 @@ class ConverterMixin(object):
             self.image = {
                 'src': node_obj.image
             }
+            self.extra = json.loads(node_obj.extra.extra_field) \
+                if node_obj.extra.check() else {}
+            for k, v in self.extra:
+                setattr(self, k, v)
 
     class CenterChunkNode(object):
 
@@ -25,6 +32,10 @@ class ConverterMixin(object):
             self.image = {
                 'src': node_obj.image
             }
+            self.extra = json.loads(node_obj.extra.extra_field) \
+                if node_obj.extra.check() else {}
+            for k, v in self.extra:
+                setattr(self, k, v)
 
     class MenuSidebarNode(object):
         """
@@ -92,8 +103,8 @@ class ConverterMixin(object):
         for item in node_obj.get_show_children():
             self.__recursive_node_append(item, node.children)
 
-    def _format_center_inside(self):
-        self.paper_inside = self.CenterChunk(self.chunk)
+    def _format_center_chunk(self):
+        self.center_chunk = self.CenterChunk(self.chunk)
 
     def _format_center_list(self):
 
