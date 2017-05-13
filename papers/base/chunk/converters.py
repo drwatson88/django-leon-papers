@@ -43,7 +43,7 @@ class ConverterMixin(object):
             self.preview = node_obj.preview
             self.date = node_obj.pub_date
             self.comments_count = None
-            self.link = {'href': '/{}/{}/{}/'.format('articles', 'article', node_obj.slug_title)}
+            self.link = {'href': '{}/'.format(node_obj.slug_title)}
             self.image = {
                 'src': node_obj.image
             }
