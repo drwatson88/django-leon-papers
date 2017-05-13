@@ -17,8 +17,23 @@ class ConverterMixin(object):
                 'src': node_obj.image
             }
             self.extra = json.loads(node_obj.extra.extra_field) \
-                if node_obj.extra.check() else {}
-            for k, v in self.extra:
+                if hasattr(node_obj, 'extra') else {}
+            for k, v in self.extra.items():
+                setattr(self, k, v)
+
+    class ChunkSettings(object):
+
+        def __init__(self, node_obj):
+            self.title = node_obj.title
+            self.preview = node_obj.preview
+            self.content = node_obj.content
+            self.pub_date = node_obj.pub_date
+            self.image = {
+                'src': node_obj.image
+            }
+            self.extra = json.loads(node_obj.extra.extra_field) \
+                if hasattr(node_obj, 'extra') else {}
+            for k, v in self.extra.items():
                 setattr(self, k, v)
 
     class CenterChunkNode(object):
@@ -33,8 +48,8 @@ class ConverterMixin(object):
                 'src': node_obj.image
             }
             self.extra = json.loads(node_obj.extra.extra_field) \
-                if node_obj.extra.check() else {}
-            for k, v in self.extra:
+                if hasattr(node_obj, 'extra') else {}
+            for k, v in self.extra.items():
                 setattr(self, k, v)
 
     class MenuSidebarNode(object):
@@ -106,13 +121,17 @@ class ConverterMixin(object):
     def _format_center_chunk(self):
         self.center_chunk = self.CenterChunk(self.chunk)
 
-    def _format_center_list(self):
+    def _format_chunk_list(self):
 
         chunk_node_s = []
         for item in self.chunk_obj_s:
             node = self.CenterChunkNode(item)
             chunk_node_s.append(node)
 
-        self.paper_list = [chunk_node_s[k: k + self.CHUNK_GRID_COUNT]
+        self.chunk_list = [chunk_node_s[k: k + self.CHUNK_GRID_COUNT]
                            for k in range(0, len(chunk_node_s) // self.CHUNK_GRID_COUNT +
                                           (1 if len(chunk_node_s) % self.CHUNK_GRID_COUNT else 0))]
+
+    def _format_chunk_settings(self):
+        self.chunk_settings = self.ChunkSettings(self.chunk_settings_obj) \
+            if self.chunk_settings_obj else {}

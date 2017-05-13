@@ -200,7 +200,7 @@ class ChunkAttachment(ImageUploadMixin, FileUploadMixin):
         return self.desc
 
 
-class ChunkSettings(SeoMixin, BaseMixin, PositionMixin, ShowMixin):
+class ChunkSettings(SeoMixin, BaseMixin, ImageUploadMixin):
 
     """ Sample model for "setting".
     """

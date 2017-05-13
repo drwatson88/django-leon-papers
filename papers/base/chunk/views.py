@@ -94,6 +94,7 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin):
     CHUNK_GRID_COUNT = 2
     CATEGORY_MODEL = None
     CHUNK_MODEL = None
+    SETTINGS_MODEL = None
     TEMPLATE = None
 
     kwargs_params_slots = {
@@ -139,9 +140,14 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin):
             self.chunk_obj_s = self.CHUNK_MODEL.objects. \
                 order_by('position').all()
 
+    def _chunk_settings(self):
+        self.chunk_settings_obj = self.SETTINGS_MODEL.objects.first() \
+            if self.SETTINGS_MODEL.objects.all() else None
+
     def get(self, *args, **kwargs):
         self._category_s_query()
         self._chunk_obj_s_query()
+        self._chunk_settings()
 
         self._format_mixin_s()
 
