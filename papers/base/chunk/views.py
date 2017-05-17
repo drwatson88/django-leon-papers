@@ -245,10 +245,12 @@ class ChunkInsideTemplateView(ChunkInsideBaseView, ChunkParamsValidatorMixin):
 
     def _set_template(self):
         slug_title = self.kwargs['chunk_slug_title']
-        self.template = os.path.join(self.TEMPLATE_PATH,
+        template_path = os.path.join(self.TEMPLATE_PATH,
                                      '{}__inside.html'.format(slug_title
                                                               if slug_title
                                                               else self.TEMPLATE_NAME))
+        self.template = template_path if os.path.exists(template_path) \
+            else os.path.join(self.TEMPLATE_PATH, self.TEMPLATE_NAME)
 
     def get(self, *args, **kwargs):
         self._set_chunk()
