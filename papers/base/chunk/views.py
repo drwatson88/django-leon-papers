@@ -53,11 +53,7 @@ class ChunkCategoryListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin
 
     def __init__(self, *args, **kwargs):
         self.params_storage = {}
-        self.output_context = {
-            'root_category_s': None,
-            'dispatcher': None,
-            'labels': None,
-        }
+        self.output_context = {}
         super(ChunkCategoryListView, self).__init__(*args, **kwargs)
 
     def _category_s_query(self, ):
@@ -81,6 +77,7 @@ class ChunkCategoryListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin
 
 
 class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin):
+
     """ Chunk List View.
 
         BREADCRUMB_TITLE - title for breadcrumb
@@ -159,6 +156,7 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin):
 
 
 class ChunkInsideBaseView(ChunkBaseView, ChunkParamsValidatorMixin):
+
     """ Portfolio Inside View. Receives get params
         and response neither arguments in get
         request params.
@@ -169,6 +167,7 @@ class ChunkInsideBaseView(ChunkBaseView, ChunkParamsValidatorMixin):
         CHUNK_MODEL - class of db "chunk" model.
         TEMPLATE - class of db "template" model.
     """
+
     BREADCRUMB_TITLE = ''
     CATEGORY_MODEL = None
     CHUNK_MODEL = None

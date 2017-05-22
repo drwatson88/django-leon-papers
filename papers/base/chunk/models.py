@@ -108,7 +108,7 @@ class FileUploadMixin(models.Model):
         abstract = True
 
 
-class Category(MP_Node, BaseMixin, SeoMixin, ImageUploadMixin, ShowMixin, PositionMixin):
+class Category(MP_Node, BaseMixin):
 
     """ Sample model for "category".
     """

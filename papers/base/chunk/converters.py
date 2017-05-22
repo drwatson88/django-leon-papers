@@ -58,8 +58,7 @@ class ConverterMixin(object):
         """
         def __init__(self, node_obj, active):
             self.name = node_obj.title
-            self.link = {'href': '/{}/{}/{}/'.format(
-                    'articles', 'category', node_obj.slug_title)}
+            self.link = {'href': '{}/{}/'.format('category', node_obj.slug_title)}
             self.options = {'count': node_obj.count(),
                             'active': active}
             self.children = []
@@ -95,18 +94,18 @@ class ConverterMixin(object):
 
         self.breadcrumb_page['path_links'][-1]['active'] = True
 
-    def _format_sidebar(self):
+    def _format_category_chunk_sidebar(self):
         """
         Method for format data from Django ORM format to widget format
         :return:
         """
-        main_menu_storage = []
+        category_chunk_sidebar_storage = []
         for item in self.category_s.order_by('-numchild'):
-            self.__recursive_node_append(item, main_menu_storage)
-        self.menu_sidebar.update({
+            self.__recursive_node_append(item, category_chunk_sidebar_storage)
+        self.category_chunk_sidebar = {
             'title': 'Категории раздела {}'.format(self.APP_LABEL),
-            'menu': main_menu_storage
-        })
+            'menu': category_chunk_sidebar_storage
+        }
 
     def __recursive_node_append(self, node_obj, storage):
         active = False
