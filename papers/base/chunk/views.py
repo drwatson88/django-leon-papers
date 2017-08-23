@@ -6,44 +6,15 @@ from django.shortcuts import render, \
     get_object_or_404, redirect
 
 from .base import ChunkBaseView, ChunkParamsValidatorMixin
-from .converters import ConverterMixin
 
 
-class ExtraMixin(object):
-    """ Class for additional methods, params.
-    """
-
-    GENERAL_LINK = 'sample_pages:general_view'
-    GENERAL_LABEL = 'Главная'
-    APP_NAME = 'sample'
-    APP_LABEL = 'Пример'
-
-    def _set_dispatcher(self):
-        self.dispatcher = {}
-        self.dispatcher.update({
-            'general': self.GENERAL_LINK,
-            'category_list': '{app}:category_list'.format(app=self.APP_NAME),
-            'chunk_list': '{app}:{app}_list'.format(app=self.APP_NAME),
-            'chunk_inside': '{app}:{app}_inside'.format(app=self.APP_NAME),
-        })
-
-    def _set_labels(self):
-        self.labels = {}
-        self.labels.update({
-            'app_label': self.APP_LABEL,
-            'general_label': self.GENERAL_LABEL,
-        })
-
-
-class ChunkCategoryListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin, ConverterMixin):
+class ChunkCategoryListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin):
     """ Category List View.
 
-        CATEGORY_GRID_COUNT - count of grid category's
         CATEGORY_MODEL - class of db "category" model.
         CHUNK_MODEL - class of db "chunk" model.
         TEMPLATE - class of db "template" model.
     """
-    CATEGORY_GRID_COUNT = 4
     CATEGORY_MODEL = None
     CHUNK_MODEL = None
     TEMPLATE = None
@@ -57,13 +28,7 @@ class ChunkCategoryListView(ChunkBaseView, ChunkParamsValidatorMixin, ExtraMixin
         super(ChunkCategoryListView, self).__init__(*args, **kwargs)
 
     def _category_s_query(self, ):
-        self.root_category_s = list()
-        category_s_prev = self.CATEGORY_MODEL.get_root_nodes().filter(show=True).all()
-
-        p = 0
-        while p < len(category_s_prev):
-            self.root_category_s.append(category_s_prev[p:p + self.CATEGORY_GRID_COUNT])
-            p += self.CATEGORY_GRID_COUNT
+        self.root_category_s = self.CATEGORY_MODEL.get_root_nodes().filter(show=True).all()
 
     def get(self, *args, **kwargs):
         self._category_s_query()
@@ -81,14 +46,12 @@ class ChunkListView(ChunkBaseView, ChunkParamsValidatorMixin):
     """ Chunk List View.
 
         BREADCRUMB_TITLE - title for breadcrumb
-        CHUNK_GRID_COUNT - count of grid chunks.
         CATEGORY_MODEL - class of db "category" model.
         CHUNK_MODEL - class of db "chunk" model.
         TEMPLATE - class of db "template" model.
     """
 
     BREADCRUMB_TITLE = ''
-    CHUNK_GRID_COUNT = 2
     CATEGORY_MODEL = None
     CHUNK_MODEL = None
     SETTINGS_MODEL = None

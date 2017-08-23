@@ -6,11 +6,12 @@ import os
 from treebeard.mp_tree import MP_Node
 from pytils.translit import slugify
 import hashlib
-
 from django.db import models
 
+from leon.base.models import ImageUploadMixin, FileUploadMixin, SeoMixin
 
-class BaseMixin(models.Model):
+
+class BaseChunkMixin(models.Model):
 
     """ Base Mixin
     """
@@ -25,90 +26,7 @@ class BaseMixin(models.Model):
         abstract = True
 
 
-class ShowMixin(models.Model):
-
-    """ Show Mixin
-    """
-
-    show = models.BooleanField(verbose_name='Показывать', default=True)
-
-    class Meta:
-        abstract = True
-
-
-class PositionMixin(models.Model):
-
-    """ Position Mixin
-    """
-
-    position = models.IntegerField(verbose_name='Позиция', blank=True, null=True)
-
-    class Meta:
-        abstract = True
-
-
-class SeoMixin(models.Model):
-
-    """ Main Seo fields Mixin
-    """
-
-    content_seo = models.TextField(verbose_name='Описание для SEO', blank=True, null=True)
-    title_seo = models.CharField(verbose_name='Заголовок для SEO', max_length=255, blank=True,
-                                 null=True)
-    meta_key = models.CharField(verbose_name='Meta key', max_length=255, blank=True,
-                                null=True)
-    meta_des = models.CharField(verbose_name='Meta des', max_length=255, blank=True,
-                                null=True)
-
-    class Meta:
-        abstract = True
-
-
-class ImageUploadMixin(models.Model):
-
-    """ Image Upload Mixin - use upload_directory 
-        for set DIR, where save images
-    """
-
-    upload_image_directory = ''
-
-    def image_upload_path(self, instance):
-        return os.path.join(self.upload_image_directory, '{}{}'.
-                            format(hashlib.md5(slugify(self.title).
-                                               encode(encoding='utf-8')).
-                                   hexdigest(), '.jpg'))
-
-    image = models.ImageField(verbose_name='Путь к файлу картинки',
-                              blank=True, max_length=255,
-                              upload_to=image_upload_path)
-
-    class Meta:
-        abstract = True
-
-
-class FileUploadMixin(models.Model):
-
-    """ File Upload Mixin - use upload_directory 
-        for set DIR, where save files
-    """
-
-    upload_file_directory = ''
-
-    def file_upload_path(self, instance):
-        return os.path.join(self.upload_file_directory, '{}{}'.
-                            format(hashlib.md5(slugify(self.title).
-                                               encode(encoding='utf-8')).
-                                   hexdigest(), '.jpg'))
-
-    file = models.FileField(verbose_name='URL доп.файла',
-                            upload_to=file_upload_path,
-                            blank=True)
-
-    class Meta:
-        abstract = True
-
-
-class Category(MP_Node, BaseMixin):
+class Category(MP_Node, BaseChunkMixin):
 
     """ Sample model for "category".
     """
@@ -131,22 +49,7 @@ class Category(MP_Node, BaseMixin):
         return '{}{}'.format((self.depth - 1) * '---', self.title)
 
 
-class ExtraJsonModel(models.Model):
-
-    """ Extra Json Model
-    """
-
-    extra_field = models.CharField(verbose_name='Доп. объекты', max_length=10000,
-                                   blank=True, null=True)
-
-    def __str__(self):
-        return self.parent.title
-
-    class Meta:
-        abstract = True
-
-
-class Chunk(BaseMixin):
+class Chunk(BaseChunkMixin):
 
     """ Sample model for "chunk".
 
@@ -200,7 +103,7 @@ class ChunkAttachment(ImageUploadMixin, FileUploadMixin):
         return self.desc
 
 
-class ChunkSettings(SeoMixin, BaseMixin, ImageUploadMixin):
+class ChunkSettings(SeoMixin, BaseChunkMixin, ImageUploadMixin):
 
     """ Sample model for "setting".
     """
