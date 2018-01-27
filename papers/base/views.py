@@ -19,11 +19,13 @@ class PapersArticleListView(PapersBaseView, PapersParamsValidatorMixin):
 
     def __init__(self, *args, **kwargs):
         self.params_storage = {}
-        self.output_context = {}
+        self.output_context = {
+            'articles_set': None
+        }
         super(PapersArticleListView, self).__init__(*args, **kwargs)
 
     def _article_s_query(self, ):
-        self.article_s = self.ARTICLE_MODEL.filter(show=True).all()
+        self.article_set = self.ARTICLE_MODEL.objects.filter(show=True).all()
 
     def get(self, *args, **kwargs):
         self._article_s_query()
@@ -51,12 +53,14 @@ class PapersArticleInsideView(PapersBaseView, PapersParamsValidatorMixin):
 
     def __init__(self, *args, **kwargs):
         self.params_storage = {}
-        self.output_context = {}
+        self.output_context = {
+            'post': None
+        }
         super(PapersArticleInsideView, self).__init__(*args, **kwargs)
 
     def _article_set(self):
         slug_title = self.params_storage['chunk_slug_title']
-        self.article = self.ARTICLE_MODEL.filter(slug_title=slug_title).first()
+        self.post = self.ARTICLE_MODEL.objects.get(slug_title=slug_title)
 
     def _get(self):
         self._article_set()

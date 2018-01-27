@@ -6,10 +6,11 @@ import hashlib
 from treebeard.mp_tree import MP_Node
 from pytils.translit import slugify
 from django.db import models
-from leon.apps.base.models import BaseFileUploadMixin, BaseImageUploadMixin
+from leon.apps.base.models import BaseFileUploadMixin, BaseImageUploadMixin, \
+    BasePositionMixin, BaseShowMixin
 
 
-class PapersBaseMixin(models.Model):
+class PapersMixin(models.Model):
 
     """ Base Article Mixin
     """
@@ -24,7 +25,7 @@ class PapersBaseMixin(models.Model):
         abstract = True
 
 
-class PapersCategory(MP_Node, PapersBaseMixin):
+class PapersCategory(MP_Node, PapersMixin):
 
     """ Sample model for "article".
     """
@@ -47,7 +48,7 @@ class PapersCategory(MP_Node, PapersBaseMixin):
         return '{}{}'.format((self.depth - 1) * '---', self.title)
 
 
-class PapersArticle(PapersBaseMixin):
+class PapersArticle(PapersMixin, BasePositionMixin, BaseShowMixin):
 
     """ Sample model for "chunk".
 
