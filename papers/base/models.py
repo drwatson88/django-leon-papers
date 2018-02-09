@@ -7,7 +7,7 @@ from treebeard.mp_tree import MP_Node
 from pytils.translit import slugify
 from django.db import models
 from leon.apps.base.models import BaseFileUploadMixin, BaseImageUploadMixin, \
-    BasePositionMixin, BaseShowMixin
+    BasePositionMixin, BaseShowMixin, BasePositionMixin
 
 
 class PapersMixin(models.Model):
@@ -72,7 +72,7 @@ class PapersArticle(PapersMixin, BasePositionMixin, BaseShowMixin):
         return self.title
 
 
-class PapersAttachment(BaseFileUploadMixin, BaseImageUploadMixin):
+class PapersAttachment(BaseFileUploadMixin, BaseImageUploadMixin, BasePositionMixin):
 
     """ Sample model for "chunk attachment".
 
@@ -87,16 +87,15 @@ class PapersAttachment(BaseFileUploadMixin, BaseImageUploadMixin):
 
     meaning = models.IntegerField(verbose_name='Тип файла', choices=MEANINGS)
     desc = models.CharField(verbose_name='Описание доп.файла или картинки',
-                            max_length=255)
+                            max_length=255, null=True, blank=True)
 
     def save(self, **kwargs):
         super(PapersAttachment, self).save()
 
     class Meta:
-        unique_together = ('chunk', 'meaning', 'desc')
         verbose_name = 'Дополнительный файл (изображение)'
         verbose_name_plural = 'Дополнительные файлы (изображения)'
         abstract = True
 
     def __str__(self):
-        return self.desc
+        return '{}---{}---{}'.format(self.article.title, self.meaning, self.position)

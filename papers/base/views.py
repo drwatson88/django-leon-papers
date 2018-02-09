@@ -20,7 +20,8 @@ class PapersArticleListView(PapersBaseView, PapersParamsValidatorMixin):
     def __init__(self, *args, **kwargs):
         self.params_storage = {}
         self.output_context = {
-            'articles_set': None
+            'article_set': None,
+            'app_title': None
         }
         super(PapersArticleListView, self).__init__(*args, **kwargs)
 
