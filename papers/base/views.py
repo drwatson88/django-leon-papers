@@ -21,7 +21,7 @@ class PapersArticleListView(PapersBaseView, PapersParamsValidatorMixin):
         self.params_storage = {}
         self.output_context = {
             'article_set': None,
-            'app_title': None
+            'article_app': None
         }
         super(PapersArticleListView, self).__init__(*args, **kwargs)
 
@@ -60,10 +60,10 @@ class PapersArticleInsideView(PapersBaseView, PapersParamsValidatorMixin):
         super(PapersArticleInsideView, self).__init__(*args, **kwargs)
 
     def _article_set(self):
-        slug_title = self.params_storage['chunk_slug_title']
+        slug_title = self.params_storage['article_slug_title']
         self.post = self.ARTICLE_MODEL.objects.get(slug_title=slug_title)
 
-    def _get(self):
+    def get(self, *args, **kwargs):
         self._article_set()
         self._aggregate()
         return self._render()
